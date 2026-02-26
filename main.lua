@@ -63,111 +63,247 @@ function LoadingScreen:Show()
 		sg.IgnoreGuiInset=true
 		sg.Parent=pg
 
+		-- Full black canvas
 		local bg=Instance.new("Frame")
 		bg.Size=UDim2.new(1,0,1,0)
-		bg.BackgroundColor3=Color3.new(0,0,0)
+		bg.BackgroundColor3=Color3.fromRGB(0,0,0)
 		bg.BorderSizePixel=0
 		bg.Parent=sg
 
+		-- Decorative grid lines (horizontal)
+		for i=1,8 do
+			local line=Instance.new("Frame")
+			line.Size=UDim2.new(1,0,0,1)
+			line.Position=UDim2.new(0,0,i/9,0)
+			line.BackgroundColor3=Color3.fromRGB(255,255,255)
+			line.BackgroundTransparency=0.96
+			line.BorderSizePixel=0
+			line.Parent=bg
+		end
+		-- Decorative grid lines (vertical)
+		for i=1,12 do
+			local line=Instance.new("Frame")
+			line.Size=UDim2.new(0,1,1,0)
+			line.Position=UDim2.new(i/13,0,0,0)
+			line.BackgroundColor3=Color3.fromRGB(255,255,255)
+			line.BackgroundTransparency=0.96
+			line.BorderSizePixel=0
+			line.Parent=bg
+		end
+
+		-- Top-left corner mark
+		local tlCorner=Instance.new("Frame")
+		tlCorner.Size=UDim2.new(0,24,0,1)
+		tlCorner.Position=UDim2.new(0,32,0,32)
+		tlCorner.BackgroundColor3=Color3.fromRGB(255,255,255)
+		tlCorner.BackgroundTransparency=0.6
+		tlCorner.BorderSizePixel=0
+		tlCorner.Parent=bg
+		local tlCornerV=Instance.new("Frame")
+		tlCornerV.Size=UDim2.new(0,1,0,24)
+		tlCornerV.Position=UDim2.new(0,32,0,32)
+		tlCornerV.BackgroundColor3=Color3.fromRGB(255,255,255)
+		tlCornerV.BackgroundTransparency=0.6
+		tlCornerV.BorderSizePixel=0
+		tlCornerV.Parent=bg
+
+		-- Bottom-right corner mark
+		local brCorner=Instance.new("Frame")
+		brCorner.Size=UDim2.new(0,24,0,1)
+		brCorner.Position=UDim2.new(1,-56,1,-32)
+		brCorner.BackgroundColor3=Color3.fromRGB(255,255,255)
+		brCorner.BackgroundTransparency=0.6
+		brCorner.BorderSizePixel=0
+		brCorner.Parent=bg
+		local brCornerV=Instance.new("Frame")
+		brCornerV.Size=UDim2.new(0,1,0,24)
+		brCornerV.Position=UDim2.new(1,-32,1,-56)
+		brCornerV.BackgroundColor3=Color3.fromRGB(255,255,255)
+		brCornerV.BackgroundTransparency=0.6
+		brCornerV.BorderSizePixel=0
+		brCornerV.Parent=bg
+
+		-- Version tag top-right
+		local verTag=Instance.new("TextLabel")
+		verTag.Size=UDim2.new(0,120,0,14)
+		verTag.Position=UDim2.new(1,-152,0,34)
+		verTag.BackgroundTransparency=1
+		verTag.Text="v"..VERSION.." / UNLIMITED"
+		verTag.TextColor3=Color3.fromRGB(255,255,255)
+		verTag.TextTransparency=0.7
+		verTag.TextSize=9
+		verTag.Font=Enum.Font.GothamBold
+		verTag.TextXAlignment=Enum.TextXAlignment.Right
+		verTag.Parent=bg
+
+		-- Center container — positioned slightly above center
 		local center=Instance.new("Frame")
-		center.Size=UDim2.new(0,400,0,260)
-		center.Position=UDim2.new(0.5,-200,0.5,-130)
+		center.Size=UDim2.new(0,480,0,220)
+		center.Position=UDim2.new(0.5,-240,0.5,-140)
 		center.BackgroundTransparency=1
 		center.Parent=bg
 
+		-- Thin accent line above title
+		local accentLine=Instance.new("Frame")
+		accentLine.Size=UDim2.new(0,0,0,1)
+		accentLine.Position=UDim2.new(0.5,0,0,0)
+		accentLine.AnchorPoint=Vector2.new(0.5,0)
+		accentLine.BackgroundColor3=Color3.fromRGB(255,255,255)
+		accentLine.BorderSizePixel=0
+		accentLine.Parent=center
+
+		-- Main logo
 		local logo=Instance.new("TextLabel")
-		logo.Size=UDim2.new(1,0,0,42)
-		logo.Position=UDim2.new(0,0,0,30)
+		logo.Size=UDim2.new(1,0,0,52)
+		logo.Position=UDim2.new(0,0,0,14)
 		logo.BackgroundTransparency=1
 		logo.Text="UFBARSTOOL"
 		logo.TextColor3=Color3.fromRGB(255,255,255)
-		logo.TextSize=38
+		logo.TextTransparency=1
+		logo.TextSize=48
 		logo.Font=Enum.Font.GothamBold
+		logo.TextXAlignment=Enum.TextXAlignment.Center
 		logo.Parent=center
 
+		-- Subtitle
 		local sub=Instance.new("TextLabel")
-		sub.Size=UDim2.new(1,0,0,18)
-		sub.Position=UDim2.new(0,0,0,76)
+		sub.Size=UDim2.new(1,0,0,16)
+		sub.Position=UDim2.new(0,0,0,70)
 		sub.BackgroundTransparency=1
-		sub.Text="CAMERA SYSTEM"
-		sub.TextColor3=Color3.fromRGB(140,140,140)
-		sub.TextSize=13
+		sub.Text="BROADCAST CAMERA SYSTEM"
+		sub.TextColor3=Color3.fromRGB(255,255,255)
+		sub.TextTransparency=1
+		sub.TextSize=10
 		sub.Font=Enum.Font.GothamBold
 		sub.TextXAlignment=Enum.TextXAlignment.Center
 		sub.Parent=center
 
-		local ver=Instance.new("TextLabel")
-		ver.Size=UDim2.new(1,0,0,14)
-		ver.Position=UDim2.new(0,0,0,96)
-		ver.BackgroundTransparency=1
-		ver.Text="v"..VERSION
-		ver.TextColor3=Color3.fromRGB(70,70,70)
-		ver.TextSize=10
-		ver.Font=Enum.Font.Gotham
-		ver.Parent=center
+		-- Thin divider
+		local divider=Instance.new("Frame")
+		divider.Size=UDim2.new(0,1,0,1)
+		divider.Position=UDim2.new(0.5,0,0,96)
+		divider.AnchorPoint=Vector2.new(0.5,0)
+		divider.BackgroundColor3=Color3.fromRGB(255,255,255)
+		divider.BackgroundTransparency=0.6
+		divider.BorderSizePixel=0
+		divider.Parent=center
 
+		-- Progress bar background
 		local barBg=Instance.new("Frame")
-		barBg.Size=UDim2.new(0,280,0,3)
-		barBg.Position=UDim2.new(0.5,-140,0,140)
-		barBg.BackgroundColor3=Color3.fromRGB(30,30,30)
+		barBg.Size=UDim2.new(0,320,0,1)
+		barBg.Position=UDim2.new(0.5,-160,0,118)
+		barBg.BackgroundColor3=Color3.fromRGB(255,255,255)
+		barBg.BackgroundTransparency=0.88
 		barBg.BorderSizePixel=0
 		barBg.Parent=center
-		local brc=Instance.new("UICorner")
-		brc.CornerRadius=UDim.new(0,2)
-		brc.Parent=barBg
 
+		-- Progress bar fill
 		local barFill=Instance.new("Frame")
 		barFill.Size=UDim2.new(0,0,1,0)
 		barFill.BackgroundColor3=Color3.fromRGB(255,255,255)
 		barFill.BorderSizePixel=0
 		barFill.Parent=barBg
-		local bfc=Instance.new("UICorner")
-		bfc.CornerRadius=UDim.new(0,2)
-		bfc.Parent=barFill
 
+		-- Progress percentage label
+		local pctLbl=Instance.new("TextLabel")
+		pctLbl.Size=UDim2.new(0,50,0,14)
+		pctLbl.Position=UDim2.new(1,4,0.5,-7)
+		pctLbl.BackgroundTransparency=1
+		pctLbl.Text="0%"
+		pctLbl.TextColor3=Color3.fromRGB(255,255,255)
+		pctLbl.TextTransparency=0.5
+		pctLbl.TextSize=8
+		pctLbl.Font=Enum.Font.GothamBold
+		pctLbl.TextXAlignment=Enum.TextXAlignment.Left
+		pctLbl.Parent=barBg
+
+		-- Status label
 		local status=Instance.new("TextLabel")
 		status.Name="Status"
 		status.Size=UDim2.new(1,0,0,14)
-		status.Position=UDim2.new(0,0,0,155)
+		status.Position=UDim2.new(0,0,0,130)
 		status.BackgroundTransparency=1
 		status.Text="INITIALIZING"
-		status.TextColor3=Color3.fromRGB(80,80,80)
-		status.TextSize=9
+		status.TextColor3=Color3.fromRGB(255,255,255)
+		status.TextTransparency=0.65
+		status.TextSize=8
 		status.Font=Enum.Font.GothamBold
+		status.TextXAlignment=Enum.TextXAlignment.Center
 		status.Parent=center
 
-		local spinner=Instance.new("Frame")
-		spinner.Size=UDim2.new(0,20,0,20)
-		spinner.Position=UDim2.new(0.5,-10,0,190)
-		spinner.BackgroundTransparency=1
-		spinner.Parent=center
-		spinner.Rotation=0
+		-- Scanning dots row
+		local dotsRow=Instance.new("Frame")
+		dotsRow.Size=UDim2.new(0,60,0,8)
+		dotsRow.Position=UDim2.new(0.5,-30,0,155)
+		dotsRow.BackgroundTransparency=1
+		dotsRow.Parent=center
 
-		for i=0,7 do
+		local dots={}
+		for i=1,5 do
 			local dot=Instance.new("Frame")
-			local angle=math.rad(i*45)
-			local r=8
-			dot.Size=UDim2.new(0,3,0,3)
-			dot.Position=UDim2.new(0.5,math.cos(angle)*r-1,0.5,math.sin(angle)*r-1)
+			dot.Size=UDim2.new(0,4,0,4)
+			dot.Position=UDim2.new(0,(i-1)*12,0.5,-2)
 			dot.BackgroundColor3=Color3.fromRGB(255,255,255)
-			dot.BackgroundTransparency=0.3+(i*0.08)
+			dot.BackgroundTransparency=0.85
 			dot.BorderSizePixel=0
-			dot.Parent=spinner
-			local dc=Instance.new("UICorner")
-			dc.CornerRadius=UDim.new(1,0)
-			dc.Parent=dot
+			dot.Parent=dotsRow
+			Instance.new("UICorner",dot).CornerRadius=UDim.new(1,0)
+			dots[i]=dot
 		end
+
+		-- Bottom-left system info
+		local sysInfo=Instance.new("TextLabel")
+		sysInfo.Size=UDim2.new(0,200,0,14)
+		sysInfo.Position=UDim2.new(0,32,1,-36)
+		sysInfo.BackgroundTransparency=1
+		sysInfo.Text="UFB/"..LP.Name
+		sysInfo.TextColor3=Color3.fromRGB(255,255,255)
+		sysInfo.TextTransparency=0.75
+		sysInfo.TextSize=8
+		sysInfo.Font=Enum.Font.GothamBold
+		sysInfo.TextXAlignment=Enum.TextXAlignment.Left
+		sysInfo.Parent=bg
 
 		self.gui=sg
 		self._barFill=barFill
+		self._pctLbl=pctLbl
 		self._status=status
-		self._spinner=spinner
 		self._bg=bg
+		self._dots=dots
+		self._logo=logo
+		self._sub=sub
+		self._divider=divider
+		self._accentLine=accentLine
 
+		-- Entrance animations
 		task.spawn(function()
-			while self.gui and self.gui.Parent and self._spinner and self._spinner.Parent do
-				self._spinner.Rotation=self._spinner.Rotation+4
-				task.wait(1/30)
+			task.wait(0.05)
+			-- Expand accent line
+			TweenService:Create(accentLine,TweenInfo.new(0.5,Enum.EasingStyle.Quart,Enum.EasingDirection.Out),
+				{Size=UDim2.new(0,320,0,1),Position=UDim2.new(0.5,-160,0,0)}):Play()
+			task.wait(0.2)
+			-- Expand divider
+			TweenService:Create(divider,TweenInfo.new(0.4,Enum.EasingStyle.Quad,Enum.EasingDirection.Out),
+				{Size=UDim2.new(0,320,0,1),Position=UDim2.new(0.5,-160,0,96)}):Play()
+			task.wait(0.1)
+			-- Fade in logo
+			TweenService:Create(logo,TweenInfo.new(0.6,Enum.EasingStyle.Quad),{TextTransparency=0}):Play()
+			task.wait(0.15)
+			-- Fade in sub
+			TweenService:Create(sub,TweenInfo.new(0.5,Enum.EasingStyle.Quad),{TextTransparency=0.35}):Play()
+		end)
+
+		-- Animated scanning dots
+		task.spawn(function()
+			local idx=1
+			while self.gui and self.gui.Parent do
+				if dots[idx] and dots[idx].Parent then
+					TweenService:Create(dots[idx],TweenInfo.new(0.18,Enum.EasingStyle.Quad),{BackgroundTransparency=0.1}):Play()
+					task.wait(0.12)
+					TweenService:Create(dots[idx],TweenInfo.new(0.4,Enum.EasingStyle.Quad),{BackgroundTransparency=0.85}):Play()
+				end
+				idx=(idx%5)+1
+				task.wait(0.1)
 			end
 		end)
 	end,"LOADING_SHOW")
@@ -176,8 +312,11 @@ end
 function LoadingScreen:SetProgress(pct,msg)
 	safeCall(function()
 		if self._barFill then
-			TweenService:Create(self._barFill,TweenInfo.new(0.3,Enum.EasingStyle.Quad),
+			TweenService:Create(self._barFill,TweenInfo.new(0.4,Enum.EasingStyle.Quart,Enum.EasingDirection.Out),
 				{Size=UDim2.new(pct,0,1,0)}):Play()
+		end
+		if self._pctLbl then
+			self._pctLbl.Text=math.floor(pct*100).."%"
 		end
 		if self._status and msg then
 			self._status.Text=string.upper(msg)
@@ -2809,251 +2948,1535 @@ local function destroyCameraEditor()
 end
 
 function buildCameraEditor()
-	-- Universal access: no tier check needed
 	safeCall(function()
 		destroyCameraEditor()
 		local pg=LP:WaitForChild("PlayerGui")
 		local sg=Instance.new("ScreenGui")
-		sg.Name="UFB_Editor" sg.ResetOnSpawn=false
-		sg.DisplayOrder=10001 sg.IgnoreGuiInset=true sg.Parent=pg
-		EditorSys.gui=sg EditorSys.visible=true
+		sg.Name="UFB_Editor"
+		sg.ResetOnSpawn=false
+		sg.DisplayOrder=10001
+		sg.IgnoreGuiInset=true
+		sg.Parent=pg
+		EditorSys.gui=sg
+		EditorSys.visible=true
 
+		-- ─────────────────────────────────────────────────────────────────
+		-- BACKDROP
+		-- ─────────────────────────────────────────────────────────────────
+		local backdrop=Instance.new("Frame")
+		backdrop.Size=UDim2.new(1,0,1,0)
+		backdrop.BackgroundColor3=Color3.fromRGB(0,0,0)
+		backdrop.BackgroundTransparency=0.55
+		backdrop.BorderSizePixel=0
+		backdrop.Parent=sg
+
+		-- ─────────────────────────────────────────────────────────────────
+		-- PANEL  (no rounded corners — sharp-edged client aesthetic)
+		-- ─────────────────────────────────────────────────────────────────
+		local W,H=720,640
 		local panel=Instance.new("Frame")
-		panel.Size=UDim2.new(0,360,0,480)
-		panel.Position=UDim2.new(0.5,-180,0.5,-240)
-		panel.BackgroundColor3=Color3.fromRGB(12,12,12)
-		panel.BorderSizePixel=0 panel.Parent=sg
-		Instance.new("UICorner",panel).CornerRadius=UDim.new(0,6)
-		Instance.new("UIStroke",panel).Color=Color3.fromRGB(50,50,50)
+		panel.Size=UDim2.new(0,W,0,H)
+		panel.Position=UDim2.new(0.5,-W/2,0.5,-H/2)
+		panel.BackgroundColor3=Color3.fromRGB(8,8,8)
+		panel.BorderSizePixel=0
+		panel.ClipsDescendants=true
+		panel.Parent=sg
 
-		local dragBar=Instance.new("TextButton")
-		dragBar.Size=UDim2.new(1,0,0,36) dragBar.BackgroundColor3=Color3.fromRGB(18,18,18)
-		dragBar.BorderSizePixel=0 dragBar.Text="" dragBar.Parent=panel
-		local htl=Instance.new("TextLabel")
-		htl.Size=UDim2.new(1,-70,1,0) htl.Position=UDim2.new(0,14,0,0)
-		htl.BackgroundTransparency=1 htl.Text="🎬  CAMERA EDITOR"
-		htl.TextColor3=Color3.fromRGB(140,180,255) htl.TextSize=11
-		htl.Font=Enum.Font.GothamBold htl.TextXAlignment=Enum.TextXAlignment.Left htl.Parent=dragBar
+		-- Outer border stroke
+		local outerStroke=Instance.new("UIStroke",panel)
+		outerStroke.Color=Color3.fromRGB(45,45,45)
+		outerStroke.Thickness=1
 
-		local closebtn=Instance.new("TextButton")
-		closebtn.Size=UDim2.new(0,28,0,28) closebtn.Position=UDim2.new(1,-32,0,4)
-		closebtn.BackgroundColor3=Color3.fromRGB(40,40,40) closebtn.BorderSizePixel=0
-		closebtn.Text="✕" closebtn.TextColor3=Color3.fromRGB(160,160,160)
-		closebtn.TextSize=10 closebtn.Font=Enum.Font.GothamBold closebtn.Parent=dragBar
-		Instance.new("UICorner",closebtn).CornerRadius=UDim.new(0,4)
-		closebtn.MouseButton1Click:Connect(destroyCameraEditor)
+		-- Top highlight line
+		local topHL=Instance.new("Frame")
+		topHL.Size=UDim2.new(1,0,0,1)
+		topHL.BackgroundColor3=Color3.fromRGB(255,255,255)
+		topHL.BackgroundTransparency=0.80
+		topHL.BorderSizePixel=0
+		topHL.Parent=panel
 
-		local dragging=false
-		local dragStart,startPos
-		dragBar.InputBegan:Connect(function(input)
-			if input.UserInputType==Enum.UserInputType.MouseButton1 then
-				dragging=true
-				dragStart=input.Position
-				startPos=panel.Position
+		-- ─────────────────────────────────────────────────────────────────
+		-- TITLE BAR
+		-- ─────────────────────────────────────────────────────────────────
+		local titleBar=Instance.new("TextButton")
+		titleBar.Size=UDim2.new(1,0,0,46)
+		titleBar.BackgroundColor3=Color3.fromRGB(11,11,11)
+		titleBar.BorderSizePixel=0
+		titleBar.Text=""
+		titleBar.AutoButtonColor=false
+		titleBar.ZIndex=10
+		titleBar.Parent=panel
+
+		-- Title bar separator
+		local titleSep=Instance.new("Frame")
+		titleSep.Size=UDim2.new(1,0,0,1)
+		titleSep.Position=UDim2.new(0,0,1,0)
+		titleSep.BackgroundColor3=Color3.fromRGB(255,255,255)
+		titleSep.BackgroundTransparency=0.87
+		titleSep.BorderSizePixel=0
+		titleSep.ZIndex=10
+		titleSep.Parent=titleBar
+
+		-- Left accent stripe
+		local accentStripe=Instance.new("Frame")
+		accentStripe.Size=UDim2.new(0,2,1,0)
+		accentStripe.BackgroundColor3=Color3.fromRGB(255,255,255)
+		accentStripe.BackgroundTransparency=0.45
+		accentStripe.BorderSizePixel=0
+		accentStripe.ZIndex=10
+		accentStripe.Parent=titleBar
+
+		-- App identifier dots (macOS-inspired but white)
+		for i,tr in ipairs({0,0.6,0.78}) do
+			local dot=Instance.new("Frame")
+			dot.Size=UDim2.new(0,8,0,8)
+			dot.Position=UDim2.new(0,(i-1)*14+10,0.5,-4)
+			dot.BackgroundColor3=Color3.fromRGB(255,255,255)
+			dot.BackgroundTransparency=tr
+			dot.BorderSizePixel=0
+			dot.ZIndex=11
+			dot.Parent=titleBar
+			Instance.new("UICorner",dot).CornerRadius=UDim.new(1,0)
+		end
+
+		-- Title text
+		local titleLbl=Instance.new("TextLabel")
+		titleLbl.Size=UDim2.new(1,-220,1,0)
+		titleLbl.Position=UDim2.new(0,56,0,0)
+		titleLbl.BackgroundTransparency=1
+		titleLbl.Text="CAMERA EDITOR"
+		titleLbl.TextColor3=Color3.fromRGB(255,255,255)
+		titleLbl.TextTransparency=0.05
+		titleLbl.TextSize=11
+		titleLbl.Font=Enum.Font.GothamBold
+		titleLbl.TextXAlignment=Enum.TextXAlignment.Left
+		titleLbl.ZIndex=10
+		titleLbl.Parent=titleBar
+
+		-- Version / tier badge
+		local tierBadge=Instance.new("Frame")
+		tierBadge.Size=UDim2.new(0,90,0,18)
+		tierBadge.Position=UDim2.new(0,56+120,0.5,-9)
+		tierBadge.BackgroundColor3=Color3.fromRGB(255,255,255)
+		tierBadge.BackgroundTransparency=0.88
+		tierBadge.BorderSizePixel=0
+		tierBadge.ZIndex=10
+		tierBadge.Parent=titleBar
+		Instance.new("UICorner",tierBadge).CornerRadius=UDim.new(0,2)
+		local tierLbl=Instance.new("TextLabel")
+		tierLbl.Size=UDim2.new(1,0,1,0)
+		tierLbl.BackgroundTransparency=1
+		tierLbl.Text="UNLIMITED"
+		tierLbl.TextColor3=Color3.fromRGB(255,255,255)
+		tierLbl.TextTransparency=0.3
+		tierLbl.TextSize=7.5
+		tierLbl.Font=Enum.Font.GothamBold
+		tierLbl.ZIndex=11
+		tierLbl.Parent=tierBadge
+
+		-- Window controls
+		local function mkWinBtn(offsetR,label)
+			local b=Instance.new("TextButton")
+			b.Size=UDim2.new(0,28,0,28)
+			b.Position=UDim2.new(1,-offsetR,0.5,-14)
+			b.BackgroundColor3=Color3.fromRGB(255,255,255)
+			b.BackgroundTransparency=0.93
+			b.BorderSizePixel=0
+			b.Text=label
+			b.TextColor3=Color3.fromRGB(255,255,255)
+			b.TextTransparency=0.4
+			b.TextSize=10
+			b.Font=Enum.Font.GothamBold
+			b.ZIndex=12
+			b.Parent=titleBar
+			Instance.new("UICorner",b).CornerRadius=UDim.new(0,2)
+			b.MouseEnter:Connect(function()
+				TweenService:Create(b,TweenInfo.new(0.1),{BackgroundTransparency=0.72,TextTransparency=0}):Play()
+			end)
+			b.MouseLeave:Connect(function()
+				TweenService:Create(b,TweenInfo.new(0.12),{BackgroundTransparency=0.93,TextTransparency=0.4}):Play()
+			end)
+			return b
+		end
+		local closeBtn=mkWinBtn(36,"✕")
+		closeBtn.MouseButton1Click:Connect(destroyCameraEditor)
+
+		local minimized=false
+		local minBtn=mkWinBtn(70,"—")
+		minBtn.MouseButton1Click:Connect(function()
+			minimized=not minimized
+			TweenService:Create(panel,TweenInfo.new(0.2,Enum.EasingStyle.Quart,Enum.EasingDirection.Out),
+				{Size=UDim2.new(0,W,0,minimized and 46 or H)}):Play()
+		end)
+
+		-- ─────────────────────────────────────────────────────────────────
+		-- DRAG
+		-- ─────────────────────────────────────────────────────────────────
+		local dragging,dragStart,startPos=false,nil,nil
+		titleBar.InputBegan:Connect(function(i)
+			if i.UserInputType==Enum.UserInputType.MouseButton1 then
+				dragging=true dragStart=i.Position startPos=panel.Position
 			end
 		end)
-		dragBar.InputEnded:Connect(function(input)
-			if input.UserInputType==Enum.UserInputType.MouseButton1 then dragging=false end
+		titleBar.InputEnded:Connect(function(i)
+			if i.UserInputType==Enum.UserInputType.MouseButton1 then dragging=false end
 		end)
-		UIS.InputChanged:Connect(function(input)
-			if dragging and input.UserInputType==Enum.UserInputType.MouseMovement then
-				local delta=input.Position-dragStart
-				panel.Position=UDim2.new(startPos.X.Scale,startPos.X.Offset+delta.X,startPos.Y.Scale,startPos.Y.Offset+delta.Y)
+		UIS.InputChanged:Connect(function(i)
+			if dragging and i.UserInputType==Enum.UserInputType.MouseMovement then
+				local d=i.Position-dragStart
+				panel.Position=UDim2.new(startPos.X.Scale,startPos.X.Offset+d.X,startPos.Y.Scale,startPos.Y.Offset+d.Y)
 			end
 		end)
 
-		local content=Instance.new("ScrollingFrame")
-		content.Size=UDim2.new(1,0,1,-36) content.Position=UDim2.new(0,0,0,36)
-		content.BackgroundTransparency=1 content.BorderSizePixel=0
-		content.ScrollBarThickness=3 content.ScrollBarImageColor3=Color3.fromRGB(50,50,50)
-		content.CanvasSize=UDim2.new(0,0,0,600) content.Parent=panel
+		-- ─────────────────────────────────────────────────────────────────
+		-- SIDEBAR
+		-- ─────────────────────────────────────────────────────────────────
+		local SW=130
+		local sidebar=Instance.new("Frame")
+		sidebar.Size=UDim2.new(0,SW,1,-46)
+		sidebar.Position=UDim2.new(0,0,0,46)
+		sidebar.BackgroundColor3=Color3.fromRGB(10,10,10)
+		sidebar.BorderSizePixel=0
+		sidebar.ZIndex=5
+		sidebar.Parent=panel
 
-		local yOff=10
+		local sideR=Instance.new("Frame")
+		sideR.Size=UDim2.new(0,1,1,0)
+		sideR.Position=UDim2.new(1,-1,0,0)
+		sideR.BackgroundColor3=Color3.fromRGB(255,255,255)
+		sideR.BackgroundTransparency=0.88
+		sideR.BorderSizePixel=0
+		sideR.Parent=sidebar
 
-		local infoLbl=Instance.new("TextLabel")
-		infoLbl.Size=UDim2.new(1,-20,0,36) infoLbl.Position=UDim2.new(0,10,0,yOff)
-		infoLbl.BackgroundTransparency=1
-		infoLbl.Text="Create custom cameras by adjusting parameters.\nCustom cameras integrate with the AI Director."
-		infoLbl.TextColor3=Color3.fromRGB(100,100,100) infoLbl.TextSize=9
-		infoLbl.Font=Enum.Font.Gotham infoLbl.TextWrapped=true
-		infoLbl.TextXAlignment=Enum.TextXAlignment.Left infoLbl.Parent=content
-		yOff=yOff+44
+		-- ─────────────────────────────────────────────────────────────────
+		-- CONTENT AREA
+		-- ─────────────────────────────────────────────────────────────────
+		local contentArea=Instance.new("Frame")
+		contentArea.Size=UDim2.new(1,-SW,1,-68)  -- leave 22px for status bar
+		contentArea.Position=UDim2.new(0,SW,0,46)
+		contentArea.BackgroundTransparency=1
+		contentArea.BorderSizePixel=0
+		contentArea.ClipsDescendants=true
+		contentArea.ZIndex=2
+		contentArea.Parent=panel
 
-		local nameBox=Instance.new("TextBox")
-		nameBox.Size=UDim2.new(1,-20,0,28) nameBox.Position=UDim2.new(0,10,0,yOff)
-		nameBox.BackgroundColor3=Color3.fromRGB(22,22,22) nameBox.BorderSizePixel=0
-		nameBox.PlaceholderText="Camera Name (e.g. MY_WIDE_CAM)"
-		nameBox.Text="" nameBox.TextColor3=Color3.fromRGB(220,220,220) nameBox.TextSize=10
-		nameBox.Font=Enum.Font.GothamBold nameBox.Parent=content
-		Instance.new("UICorner",nameBox).CornerRadius=UDim.new(0,4)
-		Instance.new("UIStroke",nameBox).Color=Color3.fromRGB(50,50,50)
-		yOff=yOff+36
+		-- ─────────────────────────────────────────────────────────────────
+		-- HELPERS
+		-- ─────────────────────────────────────────────────────────────────
+		local function makePage()
+			local sf=Instance.new("ScrollingFrame")
+			sf.Size=UDim2.new(1,0,1,0)
+			sf.BackgroundTransparency=1
+			sf.BorderSizePixel=0
+			sf.ScrollBarThickness=2
+			sf.ScrollBarImageColor3=Color3.fromRGB(255,255,255)
+			sf.ScrollBarImageTransparency=0.75
+			sf.CanvasSize=UDim2.new(0,0,0,1200)
+			sf.Visible=false
+			sf.ZIndex=2
+			sf.Parent=contentArea
+			return sf
+		end
 
-		local params={
-			{name="HEIGHT",default=40,min=1,max=200},
-			{name="DISTANCE",default=60,min=5,max=200},
-			{name="FOV",default=66,min=20,max=110},
-			{name="SMOOTH",default=0.06,min=0.01,max=0.40},
-			{name="TILT",default=8,min=-30,max=30},
-			{name="FOLLOW_Z",default=15,min=-50,max=50},
-		}
-		local sliderValues={}
+		local function secHead(parent,y,txt)
+			local f=Instance.new("Frame")
+			f.Size=UDim2.new(1,-24,0,26)
+			f.Position=UDim2.new(0,12,0,y)
+			f.BackgroundTransparency=1
+			f.ZIndex=3
+			f.Parent=parent
 
-		for _,param in ipairs(params) do
-			local row=Instance.new("Frame")
-			row.Size=UDim2.new(1,-20,0,36) row.Position=UDim2.new(0,10,0,yOff)
-			row.BackgroundColor3=Color3.fromRGB(18,18,18) row.BorderSizePixel=0 row.Parent=content
-			Instance.new("UICorner",row).CornerRadius=UDim.new(0,4)
+			local sep=Instance.new("Frame")
+			sep.Size=UDim2.new(1,0,0,1)
+			sep.Position=UDim2.new(0,0,1,0)
+			sep.BackgroundColor3=Color3.fromRGB(255,255,255)
+			sep.BackgroundTransparency=0.90
+			sep.BorderSizePixel=0
+			sep.ZIndex=3
+			sep.Parent=f
 
 			local lbl=Instance.new("TextLabel")
-			lbl.Size=UDim2.new(0,80,0,14) lbl.Position=UDim2.new(0,10,0,4)
-			lbl.BackgroundTransparency=1 lbl.Text=param.name
-			lbl.TextColor3=Color3.fromRGB(160,160,160) lbl.TextSize=9
-			lbl.Font=Enum.Font.GothamBold lbl.TextXAlignment=Enum.TextXAlignment.Left lbl.Parent=row
+			lbl.Size=UDim2.new(1,0,1,0)
+			lbl.BackgroundTransparency=1
+			lbl.Text=string.upper(txt)
+			lbl.TextColor3=Color3.fromRGB(255,255,255)
+			lbl.TextTransparency=0.62
+			lbl.TextSize=8
+			lbl.Font=Enum.Font.GothamBold
+			lbl.TextXAlignment=Enum.TextXAlignment.Left
+			lbl.ZIndex=3
+			lbl.Parent=f
+			return y+34
+		end
+
+		-- Slider: returns nextY, getter(), setter(v)
+		local function mkSlider(parent,y,lbl,mn,mx,def,dec,cb)
+			dec=dec or 0
+			local fmt=dec>0 and ("%."..dec.."f") or "%d"
+			local row=Instance.new("Frame")
+			row.Size=UDim2.new(1,-24,0,46)
+			row.Position=UDim2.new(0,12,0,y)
+			row.BackgroundColor3=Color3.fromRGB(255,255,255)
+			row.BackgroundTransparency=0.965
+			row.BorderSizePixel=0
+			row.ZIndex=3
+			row.Parent=parent
+			Instance.new("UICorner",row).CornerRadius=UDim.new(0,2)
+
+			local nameLbl=Instance.new("TextLabel")
+			nameLbl.Size=UDim2.new(0.58,0,0,14)
+			nameLbl.Position=UDim2.new(0,10,0,7)
+			nameLbl.BackgroundTransparency=1
+			nameLbl.Text=lbl
+			nameLbl.TextColor3=Color3.fromRGB(255,255,255)
+			nameLbl.TextTransparency=0.2
+			nameLbl.TextSize=9
+			nameLbl.Font=Enum.Font.GothamBold
+			nameLbl.TextXAlignment=Enum.TextXAlignment.Left
+			nameLbl.ZIndex=4
+			nameLbl.Parent=row
 
 			local valLbl=Instance.new("TextLabel")
-			valLbl.Size=UDim2.new(0,50,0,14) valLbl.Position=UDim2.new(1,-60,0,4)
-			valLbl.BackgroundTransparency=1 valLbl.Text=tostring(param.default)
-			valLbl.TextColor3=Color3.fromRGB(100,200,100) valLbl.TextSize=9
-			valLbl.Font=Enum.Font.GothamBold valLbl.TextXAlignment=Enum.TextXAlignment.Right valLbl.Parent=row
+			valLbl.Size=UDim2.new(0.38,0,0,14)
+			valLbl.Position=UDim2.new(0.6,0,0,7)
+			valLbl.BackgroundTransparency=1
+			valLbl.Text=string.format(fmt,def)
+			valLbl.TextColor3=Color3.fromRGB(255,255,255)
+			valLbl.TextTransparency=0.48
+			valLbl.TextSize=9
+			valLbl.Font=Enum.Font.GothamBold
+			valLbl.TextXAlignment=Enum.TextXAlignment.Right
+			valLbl.ZIndex=4
+			valLbl.Parent=row
 
-			local sliderBg=Instance.new("Frame")
-			sliderBg.Size=UDim2.new(1,-20,0,4) sliderBg.Position=UDim2.new(0,10,0,24)
-			sliderBg.BackgroundColor3=Color3.fromRGB(35,35,35) sliderBg.BorderSizePixel=0 sliderBg.Parent=row
-			Instance.new("UICorner",sliderBg).CornerRadius=UDim.new(0,2)
+			-- Range labels
+			local minLbl=Instance.new("TextLabel")
+			minLbl.Size=UDim2.new(0,28,0,10)
+			minLbl.Position=UDim2.new(0,10,0,33)
+			minLbl.BackgroundTransparency=1
+			minLbl.Text=string.format(fmt,mn)
+			minLbl.TextColor3=Color3.fromRGB(255,255,255)
+			minLbl.TextTransparency=0.78
+			minLbl.TextSize=7
+			minLbl.Font=Enum.Font.Gotham
+			minLbl.TextXAlignment=Enum.TextXAlignment.Left
+			minLbl.ZIndex=4
+			minLbl.Parent=row
 
-			local pct=(param.default-param.min)/(param.max-param.min)
-			local sliderFill=Instance.new("Frame")
-			sliderFill.Size=UDim2.new(pct,0,1,0)
-			sliderFill.BackgroundColor3=Color3.fromRGB(80,140,80) sliderFill.BorderSizePixel=0 sliderFill.Parent=sliderBg
-			Instance.new("UICorner",sliderFill).CornerRadius=UDim.new(0,2)
+			local maxLbl=Instance.new("TextLabel")
+			maxLbl.Size=UDim2.new(0,28,0,10)
+			maxLbl.Position=UDim2.new(1,-38,0,33)
+			maxLbl.BackgroundTransparency=1
+			maxLbl.Text=string.format(fmt,mx)
+			maxLbl.TextColor3=Color3.fromRGB(255,255,255)
+			maxLbl.TextTransparency=0.78
+			maxLbl.TextSize=7
+			maxLbl.Font=Enum.Font.Gotham
+			maxLbl.TextXAlignment=Enum.TextXAlignment.Right
+			maxLbl.ZIndex=4
+			maxLbl.Parent=row
 
-			local sliderBtn=Instance.new("TextButton")
-			sliderBtn.Size=UDim2.new(1,0,0,16) sliderBtn.Position=UDim2.new(0,0,0,18)
-			sliderBtn.BackgroundTransparency=1 sliderBtn.Text="" sliderBtn.Parent=row
+			local track=Instance.new("Frame")
+			track.Size=UDim2.new(1,-20,0,2)
+			track.Position=UDim2.new(0,10,0,27)
+			track.BackgroundColor3=Color3.fromRGB(255,255,255)
+			track.BackgroundTransparency=0.87
+			track.BorderSizePixel=0
+			track.ZIndex=4
+			track.Parent=row
+			Instance.new("UICorner",track).CornerRadius=UDim.new(1,0)
 
-			sliderValues[param.name]=param.default
+			local p0=(def-mn)/(mx-mn)
+			local fill=Instance.new("Frame")
+			fill.Size=UDim2.new(p0,0,1,0)
+			fill.BackgroundColor3=Color3.fromRGB(255,255,255)
+			fill.BorderSizePixel=0
+			fill.ZIndex=5
+			fill.Parent=track
+			Instance.new("UICorner",fill).CornerRadius=UDim.new(1,0)
 
+			local knob=Instance.new("Frame")
+			knob.Size=UDim2.new(0,9,0,9)
+			knob.Position=UDim2.new(p0,-4,0.5,-4)
+			knob.BackgroundColor3=Color3.fromRGB(255,255,255)
+			knob.BorderSizePixel=0
+			knob.ZIndex=6
+			knob.Parent=track
+			Instance.new("UICorner",knob).CornerRadius=UDim.new(1,0)
+
+			local hit=Instance.new("TextButton")
+			hit.Size=UDim2.new(1,0,0,22)
+			hit.Position=UDim2.new(0,0,0,-10)
+			hit.BackgroundTransparency=1
+			hit.Text=""
+			hit.ZIndex=7
+			hit.Parent=track
+
+			local cur=def
 			local sliding=false
-			sliderBtn.InputBegan:Connect(function(input)
-				if input.UserInputType==Enum.UserInputType.MouseButton1 then sliding=true end
+
+			local function applyRel(rel)
+				rel=clamp(rel,0,1)
+				local raw=mn+rel*(mx-mn)
+				local m=10^dec
+				cur=math.floor(raw*m+0.5)/m
+				fill.Size=UDim2.new(rel,0,1,0)
+				knob.Position=UDim2.new(rel,-4,0.5,-4)
+				valLbl.Text=string.format(fmt,cur)
+				if cb then cb(cur) end
+			end
+
+			hit.InputBegan:Connect(function(i)
+				if i.UserInputType==Enum.UserInputType.MouseButton1 then
+					sliding=true
+					applyRel((i.Position.X-track.AbsolutePosition.X)/track.AbsoluteSize.X)
+				end
 			end)
-			sliderBtn.InputEnded:Connect(function(input)
-				if input.UserInputType==Enum.UserInputType.MouseButton1 then sliding=false end
+			hit.InputEnded:Connect(function(i)
+				if i.UserInputType==Enum.UserInputType.MouseButton1 then sliding=false end
 			end)
-			UIS.InputChanged:Connect(function(input)
-				if sliding and input.UserInputType==Enum.UserInputType.MouseMovement then
-					local absPos=sliderBg.AbsolutePosition.X
-					local absSize=sliderBg.AbsoluteSize.X
-					local rel=clamp((input.Position.X-absPos)/absSize,0,1)
-					local val=param.min+rel*(param.max-param.min)
-					if param.name=="SMOOTH" then
-						val=math.floor(val*1000)/1000
-					else
-						val=math.floor(val*10)/10
-					end
-					sliderValues[param.name]=val
-					sliderFill.Size=UDim2.new(rel,0,1,0)
-					valLbl.Text=tostring(val)
+			UIS.InputChanged:Connect(function(i)
+				if sliding and i.UserInputType==Enum.UserInputType.MouseMovement then
+					applyRel((i.Position.X-track.AbsolutePosition.X)/track.AbsoluteSize.X)
 				end
 			end)
 
-			yOff=yOff+42
+			return y+54,
+				function() return cur end,
+				function(v)
+					cur=v
+					local r=clamp((v-mn)/(mx-mn),0,1)
+					fill.Size=UDim2.new(r,0,1,0)
+					knob.Position=UDim2.new(r,-4,0.5,-4)
+					valLbl.Text=string.format(fmt,cur)
+				end
 		end
 
-		local saveBtn=Instance.new("TextButton")
-		saveBtn.Size=UDim2.new(1,-20,0,32) saveBtn.Position=UDim2.new(0,10,0,yOff)
-		saveBtn.BackgroundColor3=Color3.fromRGB(40,90,40) saveBtn.BorderSizePixel=0
-		saveBtn.Text="💾  SAVE CAMERA" saveBtn.TextColor3=Color3.fromRGB(200,255,200) saveBtn.TextSize=11
-		saveBtn.Font=Enum.Font.GothamBold saveBtn.Parent=content
-		Instance.new("UICorner",saveBtn).CornerRadius=UDim.new(0,4)
+		-- Toggle: returns nextY, getter()
+		local function mkToggle(parent,y,lbl,def,cb)
+			local row=Instance.new("Frame")
+			row.Size=UDim2.new(1,-24,0,36)
+			row.Position=UDim2.new(0,12,0,y)
+			row.BackgroundColor3=Color3.fromRGB(255,255,255)
+			row.BackgroundTransparency=0.965
+			row.BorderSizePixel=0
+			row.ZIndex=3
+			row.Parent=parent
+			Instance.new("UICorner",row).CornerRadius=UDim.new(0,2)
+
+			local nameLbl=Instance.new("TextLabel")
+			nameLbl.Size=UDim2.new(1,-64,1,0)
+			nameLbl.Position=UDim2.new(0,10,0,0)
+			nameLbl.BackgroundTransparency=1
+			nameLbl.Text=lbl
+			nameLbl.TextColor3=Color3.fromRGB(255,255,255)
+			nameLbl.TextTransparency=0.25
+			nameLbl.TextSize=9.5
+			nameLbl.Font=Enum.Font.GothamBold
+			nameLbl.TextXAlignment=Enum.TextXAlignment.Left
+			nameLbl.ZIndex=4
+			nameLbl.Parent=row
+
+			local pill=Instance.new("Frame")
+			pill.Size=UDim2.new(0,36,0,18)
+			pill.Position=UDim2.new(1,-50,0.5,-9)
+			pill.BackgroundColor3=def and Color3.fromRGB(255,255,255) or Color3.fromRGB(38,38,38)
+			pill.BorderSizePixel=0
+			pill.ZIndex=4
+			pill.Parent=row
+			Instance.new("UICorner",pill).CornerRadius=UDim.new(1,0)
+			local ps=Instance.new("UIStroke",pill)
+			ps.Color=Color3.fromRGB(70,70,70)
+			ps.Thickness=1
+
+			local knob=Instance.new("Frame")
+			knob.Size=UDim2.new(0,13,0,13)
+			knob.Position=def and UDim2.new(1,-15,0.5,-6) or UDim2.new(0,2,0.5,-6)
+			knob.BackgroundColor3=def and Color3.fromRGB(0,0,0) or Color3.fromRGB(110,110,110)
+			knob.BorderSizePixel=0
+			knob.ZIndex=5
+			knob.Parent=pill
+			Instance.new("UICorner",knob).CornerRadius=UDim.new(1,0)
+
+			local state=def
+			local hit=Instance.new("TextButton")
+			hit.Size=UDim2.new(1,0,1,0)
+			hit.BackgroundTransparency=1
+			hit.Text=""
+			hit.ZIndex=6
+			hit.Parent=row
+			hit.MouseButton1Click:Connect(function()
+				state=not state
+				TweenService:Create(pill,TweenInfo.new(0.14),{
+					BackgroundColor3=state and Color3.fromRGB(255,255,255) or Color3.fromRGB(38,38,38)
+				}):Play()
+				TweenService:Create(knob,TweenInfo.new(0.14),{
+					Position=state and UDim2.new(1,-15,0.5,-6) or UDim2.new(0,2,0.5,-6),
+					BackgroundColor3=state and Color3.fromRGB(0,0,0) or Color3.fromRGB(110,110,110)
+				}):Play()
+				if cb then cb(state) end
+			end)
+			return y+44, function() return state end
+		end
+
+		-- TextInput: returns nextY, box
+		local function mkInput(parent,y,placeholder,default)
+			local box=Instance.new("TextBox")
+			box.Size=UDim2.new(1,-24,0,34)
+			box.Position=UDim2.new(0,12,0,y)
+			box.BackgroundColor3=Color3.fromRGB(255,255,255)
+			box.BackgroundTransparency=0.94
+			box.BorderSizePixel=0
+			box.PlaceholderText=placeholder
+			box.PlaceholderColor3=Color3.fromRGB(255,255,255)
+			box.Text=default or ""
+			box.TextColor3=Color3.fromRGB(255,255,255)
+			box.TextTransparency=0.08
+			box.TextSize=10
+			box.Font=Enum.Font.GothamBold
+			box.ClearTextOnFocus=false
+			box.ZIndex=4
+			box.Parent=parent
+			Instance.new("UICorner",box).CornerRadius=UDim.new(0,2)
+			local pad=Instance.new("UIPadding",box)
+			pad.PaddingLeft=UDim.new(0,10)
+			local stroke=Instance.new("UIStroke",box)
+			stroke.Color=Color3.fromRGB(255,255,255)
+			stroke.Transparency=0.87
+			box.Focused:Connect(function()
+				TweenService:Create(stroke,TweenInfo.new(0.12),{Transparency=0.55}):Play()
+			end)
+			box.FocusLost:Connect(function()
+				TweenService:Create(stroke,TweenInfo.new(0.18),{Transparency=0.87}):Play()
+			end)
+			return y+42, box
+		end
+
+		-- Button: returns nextY, btn
+		local function mkBtn(parent,y,txt,primary)
+			local btn=Instance.new("TextButton")
+			btn.Size=UDim2.new(1,-24,0,34)
+			btn.Position=UDim2.new(0,12,0,y)
+			btn.BackgroundColor3=Color3.fromRGB(255,255,255)
+			btn.BackgroundTransparency=primary and 0 or 0.92
+			btn.BorderSizePixel=0
+			btn.Text=txt
+			btn.TextColor3=primary and Color3.fromRGB(0,0,0) or Color3.fromRGB(255,255,255)
+			btn.TextTransparency=primary and 0 or 0.18
+			btn.TextSize=10
+			btn.Font=Enum.Font.GothamBold
+			btn.ZIndex=4
+			btn.Parent=parent
+			Instance.new("UICorner",btn).CornerRadius=UDim.new(0,2)
+			if not primary then
+				local st=Instance.new("UIStroke",btn)
+				st.Color=Color3.fromRGB(255,255,255)
+				st.Transparency=0.82
+			end
+			btn.MouseEnter:Connect(function()
+				TweenService:Create(btn,TweenInfo.new(0.1),{
+					BackgroundTransparency=primary and 0.1 or 0.80
+				}):Play()
+			end)
+			btn.MouseLeave:Connect(function()
+				TweenService:Create(btn,TweenInfo.new(0.14),{
+					BackgroundTransparency=primary and 0 or 0.92
+				}):Play()
+			end)
+			return y+42, btn
+		end
+
+		-- Split-row: two half-width buttons side by side
+		local function mkBtnRow(parent,y,txtL,txtR)
+			local gap=8
+			local halfW=(contentArea.AbsoluteSize.X-24-gap)/2
+			local function halfBtn(xOff,txt)
+				local b=Instance.new("TextButton")
+				b.Size=UDim2.new(0,halfW,0,34)
+				b.Position=UDim2.new(0,xOff,0,y)
+				b.BackgroundColor3=Color3.fromRGB(255,255,255)
+				b.BackgroundTransparency=0.92
+				b.BorderSizePixel=0
+				b.Text=txt
+				b.TextColor3=Color3.fromRGB(255,255,255)
+				b.TextTransparency=0.18
+				b.TextSize=9.5
+				b.Font=Enum.Font.GothamBold
+				b.ZIndex=4
+				b.Parent=parent
+				Instance.new("UICorner",b).CornerRadius=UDim.new(0,2)
+				local st=Instance.new("UIStroke",b)
+				st.Color=Color3.fromRGB(255,255,255)
+				st.Transparency=0.82
+				b.MouseEnter:Connect(function()
+					TweenService:Create(b,TweenInfo.new(0.1),{BackgroundTransparency=0.78}):Play()
+				end)
+				b.MouseLeave:Connect(function()
+					TweenService:Create(b,TweenInfo.new(0.14),{BackgroundTransparency=0.92}):Play()
+				end)
+				return b
+			end
+			local bL=halfBtn(12,txtL)
+			local bR=halfBtn(12+halfW+gap,txtR)
+			return y+42,bL,bR
+		end
+
+		-- DropDown: returns nextY, getter()
+		local function mkDropdown(parent,y,lbl,options,defIdx)
+			local selIdx=defIdx or 1
+			local row=Instance.new("Frame")
+			row.Size=UDim2.new(1,-24,0,36)
+			row.Position=UDim2.new(0,12,0,y)
+			row.BackgroundColor3=Color3.fromRGB(255,255,255)
+			row.BackgroundTransparency=0.965
+			row.BorderSizePixel=0
+			row.ZIndex=3
+			row.Parent=parent
+			Instance.new("UICorner",row).CornerRadius=UDim.new(0,2)
+
+			local nameLbl=Instance.new("TextLabel")
+			nameLbl.Size=UDim2.new(0.45,0,1,0)
+			nameLbl.Position=UDim2.new(0,10,0,0)
+			nameLbl.BackgroundTransparency=1
+			nameLbl.Text=lbl
+			nameLbl.TextColor3=Color3.fromRGB(255,255,255)
+			nameLbl.TextTransparency=0.25
+			nameLbl.TextSize=9
+			nameLbl.Font=Enum.Font.GothamBold
+			nameLbl.TextXAlignment=Enum.TextXAlignment.Left
+			nameLbl.ZIndex=4
+			nameLbl.Parent=row
+
+			local selBtn=Instance.new("TextButton")
+			selBtn.Size=UDim2.new(0.50,0,0,24)
+			selBtn.Position=UDim2.new(0.48,0,0.5,-12)
+			selBtn.BackgroundColor3=Color3.fromRGB(255,255,255)
+			selBtn.BackgroundTransparency=0.88
+			selBtn.BorderSizePixel=0
+			selBtn.Text=options[selIdx].." ▾"
+			selBtn.TextColor3=Color3.fromRGB(255,255,255)
+			selBtn.TextTransparency=0.2
+			selBtn.TextSize=8.5
+			selBtn.Font=Enum.Font.GothamBold
+			selBtn.ZIndex=5
+			selBtn.Parent=row
+			Instance.new("UICorner",selBtn).CornerRadius=UDim.new(0,2)
+
+			-- Cycle on click (simple cycling dropdown for Roblox)
+			selBtn.MouseButton1Click:Connect(function()
+				selIdx=(selIdx%#options)+1
+				selBtn.Text=options[selIdx].." ▾"
+			end)
+			return y+44, function() return options[selIdx] end
+		end
+
+		-- ─────────────────────────────────────────────────────────────────
+		-- TAB DATA
+		-- ─────────────────────────────────────────────────────────────────
+		local tabDefs={
+			{id="BUILD",   icon="◈",label="BUILD"},
+			{id="PRESETS", icon="▦",label="PRESETS"},
+			{id="LIBRARY", icon="≡",label="LIBRARY"},
+			{id="TUNING",  icon="⚙",label="TUNING"},
+			{id="LIVE",    icon="◉",label="LIVE"},
+		}
+		local tabBtns={}
+		local tabPages={}
+		local activeTab="BUILD"
+
+		-- ─────────────────────────────────────────────────────────────────
+		-- SHARED SLIDER STATE (shared between BUILD & PRESETS loading)
+		-- ─────────────────────────────────────────────────────────────────
+		local SV={
+			HEIGHT=44, DISTANCE=82, FOV=66, SMOOTH=0.055,
+			TILT=8,    FOLLOW_Z=18, LEAD=12, ORBIT_RADIUS=20,
+			ORBIT_SPEED=0.30, SIDE_OFFSET=0, MIN_HEIGHT=3, MAX_HEIGHT=160,
+			SHAKE_INTENSITY=0.4, SHAKE_FREQ=0.08,
+		}
+		local SR={}  -- setter references: SR[key](v)
+		local nameBox=nil  -- set during BUILD tab construction
+
+		-- ─────────────────────────────────────────────────────────────────
+		-- ════ TAB 1: BUILD ════════════════════════════════════════════════
+		-- ─────────────────────────────────────────────────────────────────
+		local buildPage=makePage()
+		tabPages["BUILD"]=buildPage
+
+		local bY=14
+
+		-- ── Identity ──
+		bY=secHead(buildPage,bY,"Camera Identity")
+		bY,nameBox=mkInput(buildPage,bY,"NAME  (e.g.  MY_ENDZONE_CAM)","")
+
+		-- Base type chips
+		do
+			local typeLbl=Instance.new("TextLabel")
+			typeLbl.Size=UDim2.new(1,-24,0,11)
+			typeLbl.Position=UDim2.new(0,12,0,bY)
+			typeLbl.BackgroundTransparency=1
+			typeLbl.Text="BASE TYPE"
+			typeLbl.TextColor3=Color3.fromRGB(255,255,255)
+			typeLbl.TextTransparency=0.65
+			typeLbl.TextSize=7.5
+			typeLbl.Font=Enum.Font.GothamBold
+			typeLbl.TextXAlignment=Enum.TextXAlignment.Left
+			typeLbl.ZIndex=3
+			typeLbl.Parent=buildPage
+			bY=bY+16
+
+			local types={"BROADCAST","FOLLOW","ORBIT","SIDELINE","AERIAL"}
+			local selType="BROADCAST"
+			local chipBtns={}
+			local cW=math.floor((contentArea.AbsoluteSize.X-24-4*(#types-1))/#types)
+			for i2,tp in ipairs(types) do
+				local c=Instance.new("TextButton")
+				c.Size=UDim2.new(0,cW,0,26)
+				c.Position=UDim2.new(0,12+(i2-1)*(cW+4),0,bY)
+				c.BackgroundColor3=Color3.fromRGB(255,255,255)
+				c.BackgroundTransparency=tp==selType and 0.82 or 0.94
+				c.BorderSizePixel=0
+				c.Text=tp
+				c.TextColor3=Color3.fromRGB(255,255,255)
+				c.TextTransparency=tp==selType and 0.08 or 0.52
+				c.TextSize=7.5
+				c.Font=Enum.Font.GothamBold
+				c.ZIndex=4
+				c.Parent=buildPage
+				Instance.new("UICorner",c).CornerRadius=UDim.new(0,2)
+				chipBtns[tp]=c
+				c.MouseButton1Click:Connect(function()
+					selType=tp
+					for _,k in pairs(chipBtns) do
+						k.BackgroundTransparency=0.94 k.TextTransparency=0.52
+					end
+					c.BackgroundTransparency=0.82 c.TextTransparency=0.08
+					-- Auto-populate sensible defaults
+					local defaults={
+						BROADCAST={HEIGHT=44,DISTANCE=82,FOV=66,TILT=8,FOLLOW_Z=18},
+						FOLLOW    ={HEIGHT=10,DISTANCE=20,FOV=74,TILT=3,FOLLOW_Z=10},
+						ORBIT     ={HEIGHT=14,DISTANCE=0, FOV=68,TILT=0,FOLLOW_Z=0},
+						SIDELINE  ={HEIGHT=6, DISTANCE=18,FOV=76,TILT=4,FOLLOW_Z=8},
+						AERIAL    ={HEIGHT=90,DISTANCE=0, FOV=52,TILT=55,FOLLOW_Z=25},
+					}
+					local d=defaults[tp]
+					if d then
+						for k,v in pairs(d) do
+							SV[k]=v
+							if SR[k] then SR[k](v) end
+						end
+					end
+				end)
+			end
+			bY=bY+34
+		end
+
+		-- ── Position & Optics ──
+		bY=bY+4
+		bY=secHead(buildPage,bY,"Position & Optics")
+
+		local function addS(label,key,mn,mx,dec)
+			local ny,getter,setter=mkSlider(buildPage,bY,label,mn,mx,SV[key],dec,function(v) SV[key]=v end)
+			bY=ny SR[key]=setter
+		end
+
+		addS("HEIGHT",         "HEIGHT",       1,  220, 0)
+		addS("DISTANCE",       "DISTANCE",     0,  260, 0)
+		addS("FIELD OF VIEW",  "FOV",          20, 120, 0)
+		addS("TILT ANGLE",     "TILT",         -40, 40, 0)
+		addS("FOLLOW Z OFFSET","FOLLOW_Z",     -80, 80, 0)
+		addS("LEAD AHEAD",     "LEAD",         0,  50,  0)
+		addS("SIDE OFFSET",    "SIDE_OFFSET",  -80, 80, 0)
+
+		-- ── Height Clamp ──
+		bY=bY+4
+		bY=secHead(buildPage,bY,"Height Bounds")
+		addS("MIN HEIGHT",  "MIN_HEIGHT",  0,  30, 0)
+		addS("MAX HEIGHT",  "MAX_HEIGHT",  20, 250, 0)
+
+		-- ── Motion ──
+		bY=bY+4
+		bY=secHead(buildPage,bY,"Motion & Smoothing")
+		addS("SMOOTH FACTOR", "SMOOTH",       0.005, 0.60, 3)
+		addS("ORBIT RADIUS",  "ORBIT_RADIUS", 5,     100,  0)
+		addS("ORBIT SPEED",   "ORBIT_SPEED",  0.01,  3.0,  2)
+
+		-- ── Shake ──
+		bY=bY+4
+		bY=secHead(buildPage,bY,"Camera Shake")
+		addS("SHAKE INTENSITY","SHAKE_INTENSITY",0,2.0,2)
+		addS("SHAKE FREQUENCY","SHAKE_FREQ",     0.01,0.5,2)
+
+		-- ── Flags ──
+		bY=bY+4
+		bY=secHead(buildPage,bY,"Behaviour Flags")
+		local _,getAutoAI    =mkToggle(buildPage,bY,"Include in AI Director",true,nil) bY=bY+44
+		local _,getPredictive=mkToggle(buildPage,bY,"Predictive Ball Lead",true,nil)   bY=bY+44
+		local _,getFollowVel =mkToggle(buildPage,bY,"Velocity-Based Lead",true,nil)    bY=bY+44
+		local _,getShake     =mkToggle(buildPage,bY,"Enable Camera Shake",false,nil)   bY=bY+44
+		local _,getDOF       =mkToggle(buildPage,bY,"Depth of Field Hint",false,nil)   bY=bY+44
+		local _,getLockY     =mkToggle(buildPage,bY,"Lock Vertical Aim",false,nil)     bY=bY+44
+
+		-- ── Focus target ──
+		bY=bY+4
+		bY=secHead(buildPage,bY,"Focus Target")
+		local _,getFocusMode=mkDropdown(buildPage,bY,"MODE",{"BALL","BALL_CARRIER","NEAREST_PLAYER","CUSTOM_POINT"},1)
+		bY=bY+44
+
+		-- ── Transition ──
+		bY=secHead(buildPage,bY,"Transition")
+		local _,getTransMode=mkDropdown(buildPage,bY,"CUT STYLE",{"SMOOTH","HARD CUT","WIPE","FADE"},1)
+		bY=bY+44
+		addS("TRANSITION SPEED","SMOOTH",0.005,0.60,3)  -- reuses smooth
+
+		-- ── Actions ──
+		bY=bY+8
+		local _,prevBtn=mkBtn(buildPage,bY,"▶  PREVIEW",false) bY=bY+42
+		local _,saveBtn=mkBtn(buildPage,bY,"  SAVE CAMERA",true) bY=bY+42
+		local ny2,rstBtn,dupBtn=mkBtnRow(buildPage,bY,"↺  RESET","⊕  DUPLICATE") bY=ny2+4
+
+		buildPage.CanvasSize=UDim2.new(0,0,0,bY+20)
+
+		-- ── Button logic ──
+		prevBtn.MouseButton1Click:Connect(function()
+			if not Cam.ball or not Cam.ball.Parent then
+				notifyErr("Editor","No ball in workspace") return
+			end
+			local bp=Cam.ball.Position
+			local tp=Vector3.new(SV.DISTANCE+Cam.dynDist,SV.HEIGHT+Cam.dynHeight,bp.Z+SV.FOLLOW_Z)
+			Cam.tgtCF=applyTilt(CFrame.new(tp,bp+Vector3.new(0,3,0)),SV.TILT)
+			Cam.tgtFOV=SV.FOV
+			Cam.manual=true
+			notify("Editor","Preview active — press A to re-enable AI")
+		end)
+
+		rstBtn.MouseButton1Click:Connect(function()
+			local def={HEIGHT=44,DISTANCE=82,FOV=66,SMOOTH=0.055,TILT=8,FOLLOW_Z=18,
+				LEAD=12,SIDE_OFFSET=0,ORBIT_RADIUS=20,ORBIT_SPEED=0.30,
+				MIN_HEIGHT=3,MAX_HEIGHT=160,SHAKE_INTENSITY=0.4,SHAKE_FREQ=0.08}
+			for k,v in pairs(def) do
+				SV[k]=v if SR[k] then SR[k](v) end
+			end
+			notify("Editor","Defaults restored")
+		end)
+
+		dupBtn.MouseButton1Click:Connect(function()
+			local base=nameBox.Text:gsub("%s+","_"):upper()
+			if base=="" then notifyErr("Editor","Name the camera first") return end
+			nameBox.Text=base.."_COPY"
+			notify("Editor","Duplicated — edit name then save")
+		end)
 
 		saveBtn.MouseButton1Click:Connect(function()
-			local camName=string.upper(nameBox.Text:gsub("%s+","_"))
-			if camName=="" then notifyErr("Editor","Enter a camera name") return end
+			local rawN=nameBox.Text
+			local camName=rawN:upper():gsub("%s+","_"):gsub("[^%w_]","")
+			if camName=="" then notifyErr("Editor","Enter a name first") return end
 
-			local camData={
+			local cd={
 				name=camName,
-				HEIGHT=sliderValues.HEIGHT,
-				DISTANCE=sliderValues.DISTANCE,
-				FOV=sliderValues.FOV,
-				SMOOTH=sliderValues.SMOOTH,
-				TILT=sliderValues.TILT,
-				FOLLOW_Z=sliderValues.FOLLOW_Z,
+				HEIGHT=SV.HEIGHT, DISTANCE=SV.DISTANCE, FOV=SV.FOV,
+				SMOOTH=SV.SMOOTH, TILT=SV.TILT, FOLLOW_Z=SV.FOLLOW_Z,
+				LEAD=SV.LEAD, SIDE_OFFSET=SV.SIDE_OFFSET,
+				ORBIT_RADIUS=SV.ORBIT_RADIUS, ORBIT_SPEED=SV.ORBIT_SPEED,
+				MIN_HEIGHT=SV.MIN_HEIGHT, MAX_HEIGHT=SV.MAX_HEIGHT,
+				SHAKE_INTENSITY=SV.SHAKE_INTENSITY, SHAKE_FREQ=SV.SHAKE_FREQ,
+				AUTO_AI=getAutoAI(), PREDICTIVE=getPredictive(),
+				FOLLOW_VEL=getFollowVel(), SHAKE=getShake(),
+				DOF=getDOF(), LOCK_Y=getLockY(),
+				FOCUS_MODE=getFocusMode(), TRANSITION=getTransMode(),
 			}
 
-			CFG.CAM[camName]=camData
-			EditorSys.customCams[camName]=camData
+			CFG.CAM[camName]=cd
+			EditorSys.customCams[camName]=cd
 
 			CAM_FN[camName]=function()
 				safeCall(function()
 					if not Cam.ball or not Cam.ball.Parent then return end
 					local bp=Cam.ball.Position
-					local cd=camData
+					local bv=BallTracker:GetSmoothedVelocity(3)
+					local leadZ=0
+					if bv.Magnitude>5 and cd.FOLLOW_VEL then
+						leadZ=bv.Z*(cd.LEAD or 0)/math.max(bv.Magnitude,1)*0.5
+					end
+					local h=clamp((cd.HEIGHT or 44)+Cam.dynHeight, cd.MIN_HEIGHT or 1, cd.MAX_HEIGHT or 220)
 					local tp=Vector3.new(
-						(cd.DISTANCE or 60)+Cam.dynDist,
-						(cd.HEIGHT or 40)+Cam.dynHeight,
-						bp.Z+(cd.FOLLOW_Z or 15)
+						(cd.DISTANCE or 60)+(cd.SIDE_OFFSET or 0)+Cam.dynDist,
+						h,
+						bp.Z+(cd.FOLLOW_Z or 18)+leadZ
 					)
-					Cam.tgtCF=applyTilt(CFrame.new(tp,bp+Vector3.new(0,3,0)),cd.TILT or 0)
+					local look=bp+Vector3.new(0,3,0)
+					if cd.PREDICTIVE and BallTracker.catchTarget then
+						local ch=getHRP(BallTracker.catchTarget)
+						if ch then look=bp:Lerp(ch.Position+Vector3.new(0,2,0),0.3) end
+					end
+					if cd.LOCK_Y then look=Vector3.new(look.X,tp.Y,look.Z) end
+					Cam.tgtCF=applyTilt(CFrame.new(tp,look),cd.TILT or 0)
 					Cam.tgtFOV=(cd.FOV or 66)+Cam.dynFOV
 				end,"CAM_CUSTOM_"..camName)
 			end
 
-			local found=false
-			for _,existing in ipairs(SHOTS) do
-				if existing==camName then found=true break end
+			if cd.AUTO_AI then
+				local found=false
+				for _,s in ipairs(SHOTS) do if s==camName then found=true break end end
+				if not found then table.insert(SHOTS,camName) end
 			end
-			if not found then table.insert(SHOTS,camName) end
 
-			notify("Editor","Saved: "..camName)
-		end)
-		yOff=yOff+40
-
-		local previewBtn=Instance.new("TextButton")
-		previewBtn.Size=UDim2.new(1,-20,0,28) previewBtn.Position=UDim2.new(0,10,0,yOff)
-		previewBtn.BackgroundColor3=Color3.fromRGB(30,50,80) previewBtn.BorderSizePixel=0
-		previewBtn.Text="👁  PREVIEW CURRENT SETTINGS" previewBtn.TextColor3=Color3.fromRGB(160,200,255) previewBtn.TextSize=10
-		previewBtn.Font=Enum.Font.GothamBold previewBtn.Parent=content
-		Instance.new("UICorner",previewBtn).CornerRadius=UDim.new(0,4)
-
-		previewBtn.MouseButton1Click:Connect(function()
-			if not Cam.ball or not Cam.ball.Parent then notifyErr("Editor","No ball found") return end
-			local bp=Cam.ball.Position
-			local tp=Vector3.new(sliderValues.DISTANCE+Cam.dynDist,sliderValues.HEIGHT+Cam.dynHeight,bp.Z+sliderValues.FOLLOW_Z)
-			Cam.tgtCF=applyTilt(CFrame.new(tp,bp+Vector3.new(0,3,0)),sliderValues.TILT)
-			Cam.tgtFOV=sliderValues.FOV
-			notify("Editor","Previewing...")
-		end)
-		yOff=yOff+36
-
-		local listLabel=Instance.new("TextLabel")
-		listLabel.Size=UDim2.new(1,-20,0,14) listLabel.Position=UDim2.new(0,10,0,yOff)
-		listLabel.BackgroundTransparency=1 listLabel.Text="SAVED CAMERAS"
-		listLabel.TextColor3=Color3.fromRGB(70,70,70) listLabel.TextSize=8.5
-		listLabel.Font=Enum.Font.GothamBold listLabel.TextXAlignment=Enum.TextXAlignment.Left listLabel.Parent=content
-		yOff=yOff+18
-
-		for cname,cdata in pairs(EditorSys.customCams) do
-			local entry=Instance.new("TextButton")
-			entry.Size=UDim2.new(1,-20,0,24) entry.Position=UDim2.new(0,10,0,yOff)
-			entry.BackgroundColor3=Color3.fromRGB(22,22,22) entry.BorderSizePixel=0
-			entry.Text="  "..cname.."  (H:"..cdata.HEIGHT.." D:"..cdata.DISTANCE.." F:"..cdata.FOV..")"
-			entry.TextColor3=Color3.fromRGB(160,160,160) entry.TextSize=9
-			entry.Font=Enum.Font.Gotham entry.TextXAlignment=Enum.TextXAlignment.Left entry.Parent=content
-			Instance.new("UICorner",entry).CornerRadius=UDim.new(0,3)
-			entry.MouseButton1Click:Connect(function()
-				Cam:setMode(cname)
-				notify("Editor","Switched to "..cname)
+			notify("Editor","Saved — "..camName)
+			TweenService:Create(saveBtn,TweenInfo.new(0.1),{BackgroundTransparency=0.25}):Play()
+			task.delay(0.35,function()
+				TweenService:Create(saveBtn,TweenInfo.new(0.22),{BackgroundTransparency=0}):Play()
 			end)
-			yOff=yOff+28
+		end)
+
+		-- ─────────────────────────────────────────────────────────────────
+		-- ════ TAB 2: PRESETS ══════════════════════════════════════════════
+		-- ─────────────────────────────────────────────────────────────────
+		local presetsPage=makePage()
+		tabPages["PRESETS"]=presetsPage
+
+		local presets={
+			{name="TV BROADCAST",  tag="CLASSIC",
+			 desc="Elevated sideline, standard NFL television framing",
+			 vals={HEIGHT=44,DISTANCE=82,FOV=66,SMOOTH=0.055,TILT=8,FOLLOW_Z=18,LEAD=12,SIDE_OFFSET=0}},
+			{name="TIGHT SIDELINE",tag="DRAMA",
+			 desc="Low sideline, pads-level tension shot",
+			 vals={HEIGHT=5,DISTANCE=22,FOV=76,SMOOTH=0.14,TILT=3,FOLLOW_Z=9,LEAD=15,SIDE_OFFSET=0}},
+			{name="HIGH AERIAL",   tag="TACTICAL",
+			 desc="All-22 bird's-eye formation read",
+			 vals={HEIGHT=96,DISTANCE=120,FOV=54,SMOOTH=0.036,TILT=15,FOLLOW_Z=32,LEAD=8,SIDE_OFFSET=0}},
+			{name="SKYCAM",        tag="CABLE",
+			 desc="Overhead cable-cam, center field",
+			 vals={HEIGHT=60,DISTANCE=42,FOV=50,SMOOTH=0.055,TILT=48,FOLLOW_Z=0,LEAD=0,SIDE_OFFSET=0}},
+			{name="POCKET VIEW",   tag="QB",
+			 desc="Behind QB at shoulder height, pressure visible",
+			 vals={HEIGHT=8,DISTANCE=11,FOV=78,SMOOTH=0.15,TILT=4,FOLLOW_Z=5,LEAD=18,SIDE_OFFSET=3}},
+			{name="TIGHT FOLLOW",  tag="CARRIER",
+			 desc="Intimate over-shoulder of ball carrier",
+			 vals={HEIGHT=9,DISTANCE=17,FOV=75,SMOOTH=0.20,TILT=5,FOLLOW_Z=11,LEAD=17,SIDE_OFFSET=2}},
+			{name="END ZONE",      tag="REDZONE",
+			 desc="Looking into the end zone from behind",
+			 vals={HEIGHT=22,DISTANCE=46,FOV=64,SMOOTH=0.070,TILT=7,FOLLOW_Z=-30,LEAD=5,SIDE_OFFSET=0}},
+			{name="PYLON CAM",     tag="ULTRA LOW",
+			 desc="Ground level, pylon perspective",
+			 vals={HEIGHT=1,DISTANCE=7,FOV=85,SMOOTH=0.22,TILT=1,FOLLOW_Z=0,LEAD=4,SIDE_OFFSET=5}},
+			{name="CINEMATIC WIDE",tag="FILM",
+			 desc="Anamorphic-style slow wide dolly",
+			 vals={HEIGHT=14,DISTANCE=28,FOV=56,SMOOTH=0.055,TILT=5,FOLLOW_Z=0,LEAD=0,SIDE_OFFSET=0}},
+			{name="BLITZ CAM",     tag="PRESSURE",
+			 desc="Edge rush angle, pressure visibility",
+			 vals={HEIGHT=7,DISTANCE=13,FOV=82,SMOOTH=0.18,TILT=3,FOLLOW_Z=6,LEAD=12,SIDE_OFFSET=2}},
+			{name="STADIUM SWEEP", tag="AMBIENT",
+			 desc="Wide sweeping stadium perspective",
+			 vals={HEIGHT=55,DISTANCE=100,FOV=60,SMOOTH=0.038,TILT=12,FOLLOW_Z=20,LEAD=6,SIDE_OFFSET=0}},
+			{name="LINE OF SCRIMMAGE",tag="TRENCHES",
+			 desc="Right at the line, O-line vs D-line",
+			 vals={HEIGHT=4,DISTANCE=5,FOV=80,SMOOTH=0.19,TILT=2,FOLLOW_Z=2,LEAD=8,SIDE_OFFSET=0}},
+		}
+
+		local pY=14
+		pY=secHead(presetsPage,pY,"Built-In Presets  ·  Click to load into Build tab")
+
+		for _,p in ipairs(presets) do
+			local card=Instance.new("TextButton")
+			card.Size=UDim2.new(1,-24,0,56)
+			card.Position=UDim2.new(0,12,0,pY)
+			card.BackgroundColor3=Color3.fromRGB(255,255,255)
+			card.BackgroundTransparency=0.965
+			card.BorderSizePixel=0
+			card.Text=""
+			card.ZIndex=3
+			card.Parent=presetsPage
+			Instance.new("UICorner",card).CornerRadius=UDim.new(0,2)
+			local cs=Instance.new("UIStroke",card)
+			cs.Color=Color3.fromRGB(255,255,255)
+			cs.Transparency=0.90
+
+			local tagLbl=Instance.new("TextLabel")
+			tagLbl.Size=UDim2.new(0,72,0,15)
+			tagLbl.Position=UDim2.new(0,10,0,8)
+			tagLbl.BackgroundColor3=Color3.fromRGB(255,255,255)
+			tagLbl.BackgroundTransparency=0.88
+			tagLbl.Text=p.tag
+			tagLbl.TextColor3=Color3.fromRGB(255,255,255)
+			tagLbl.TextTransparency=0.25
+			tagLbl.TextSize=6.5
+			tagLbl.Font=Enum.Font.GothamBold
+			tagLbl.ZIndex=4
+			tagLbl.Parent=card
+			Instance.new("UICorner",tagLbl).CornerRadius=UDim.new(0,2)
+
+			local nameLbl=Instance.new("TextLabel")
+			nameLbl.Size=UDim2.new(1,-130,0,16)
+			nameLbl.Position=UDim2.new(0,88,0,8)
+			nameLbl.BackgroundTransparency=1
+			nameLbl.Text=p.name
+			nameLbl.TextColor3=Color3.fromRGB(255,255,255)
+			nameLbl.TextTransparency=0.06
+			nameLbl.TextSize=10
+			nameLbl.Font=Enum.Font.GothamBold
+			nameLbl.TextXAlignment=Enum.TextXAlignment.Left
+			nameLbl.ZIndex=4
+			nameLbl.Parent=card
+
+			local descLbl=Instance.new("TextLabel")
+			descLbl.Size=UDim2.new(1,-130,0,13)
+			descLbl.Position=UDim2.new(0,88,0,28)
+			descLbl.BackgroundTransparency=1
+			descLbl.Text=p.desc
+			descLbl.TextColor3=Color3.fromRGB(255,255,255)
+			descLbl.TextTransparency=0.58
+			descLbl.TextSize=8.5
+			descLbl.Font=Enum.Font.Gotham
+			descLbl.TextXAlignment=Enum.TextXAlignment.Left
+			descLbl.ZIndex=4
+			descLbl.Parent=card
+
+			-- Mini param strip
+			local params=string.format("H:%d  D:%d  F°:%d  SM:%.3f",
+				p.vals.HEIGHT or 0,p.vals.DISTANCE or 0,
+				p.vals.FOV or 0,p.vals.SMOOTH or 0)
+			local paramLbl=Instance.new("TextLabel")
+			paramLbl.Size=UDim2.new(1,-130,0,10)
+			paramLbl.Position=UDim2.new(0,88,0,43)
+			paramLbl.BackgroundTransparency=1
+			paramLbl.Text=params
+			paramLbl.TextColor3=Color3.fromRGB(255,255,255)
+			paramLbl.TextTransparency=0.72
+			paramLbl.TextSize=7.5
+			paramLbl.Font=Enum.Font.Gotham
+			paramLbl.TextXAlignment=Enum.TextXAlignment.Left
+			paramLbl.ZIndex=4
+			paramLbl.Parent=card
+
+			local arrow=Instance.new("TextLabel")
+			arrow.Size=UDim2.new(0,32,1,0)
+			arrow.Position=UDim2.new(1,-40,0,0)
+			arrow.BackgroundTransparency=1
+			arrow.Text="→"
+			arrow.TextColor3=Color3.fromRGB(255,255,255)
+			arrow.TextTransparency=0.6
+			arrow.TextSize=14
+			arrow.Font=Enum.Font.GothamBold
+			arrow.ZIndex=4
+			arrow.Parent=card
+
+			card.MouseEnter:Connect(function()
+				TweenService:Create(card,TweenInfo.new(0.1),{BackgroundTransparency=0.87}):Play()
+				TweenService:Create(cs,TweenInfo.new(0.1),{Transparency=0.72}):Play()
+			end)
+			card.MouseLeave:Connect(function()
+				TweenService:Create(card,TweenInfo.new(0.14),{BackgroundTransparency=0.965}):Play()
+				TweenService:Create(cs,TweenInfo.new(0.14),{Transparency=0.90}):Play()
+			end)
+			card.MouseButton1Click:Connect(function()
+				for k,v in pairs(p.vals) do
+					SV[k]=v if SR[k] then SR[k](v) end
+				end
+				if nameBox then nameBox.Text=p.name:gsub("%s+","_") end
+				-- Switch to BUILD
+				for _,pg in pairs(tabPages) do pg.Visible=false end
+				for _,tb in pairs(tabBtns) do tb.BackgroundTransparency=0.94 tb.TextTransparency=0.52 end
+				tabPages["BUILD"].Visible=true
+				if tabBtns["BUILD"] then tabBtns["BUILD"].BackgroundTransparency=0.80 tabBtns["BUILD"].TextTransparency=0.08 end
+				activeTab="BUILD"
+				notify("Editor","Loaded: "..p.name)
+			end)
+
+			pY=pY+64
+		end
+		presetsPage.CanvasSize=UDim2.new(0,0,0,pY+20)
+
+		-- ─────────────────────────────────────────────────────────────────
+		-- ════ TAB 3: LIBRARY ══════════════════════════════════════════════
+		-- ─────────────────────────────────────────────────────────────────
+		local libraryPage=makePage()
+		tabPages["LIBRARY"]=libraryPage
+
+		local function rebuildLibrary()
+			-- Clear old content
+			for _,c in ipairs(libraryPage:GetChildren()) do
+				if not c:IsA("UIScrollingFrameConstraint") then c:Destroy() end
+			end
+			local lY=14
+			lY=secHead(libraryPage,lY,"Saved Custom Cameras")
+
+			local count=0
+			for cname,cdata in pairs(EditorSys.customCams) do
+				count=count+1
+				local card=Instance.new("Frame")
+				card.Size=UDim2.new(1,-24,0,64)
+				card.Position=UDim2.new(0,12,0,lY)
+				card.BackgroundColor3=Color3.fromRGB(255,255,255)
+				card.BackgroundTransparency=0.965
+				card.BorderSizePixel=0
+				card.ZIndex=3
+				card.Parent=libraryPage
+				Instance.new("UICorner",card).CornerRadius=UDim.new(0,2)
+				Instance.new("UIStroke",card).Color=Color3.fromRGB(55,55,55)
+
+				local cNLbl=Instance.new("TextLabel")
+				cNLbl.Size=UDim2.new(0.65,0,0,16)
+				cNLbl.Position=UDim2.new(0,12,0,8)
+				cNLbl.BackgroundTransparency=1
+				cNLbl.Text=cname
+				cNLbl.TextColor3=Color3.fromRGB(255,255,255)
+				cNLbl.TextTransparency=0.06
+				cNLbl.TextSize=10
+				cNLbl.Font=Enum.Font.GothamBold
+				cNLbl.TextXAlignment=Enum.TextXAlignment.Left
+				cNLbl.ZIndex=4
+				cNLbl.Parent=card
+
+				local cStats=Instance.new("TextLabel")
+				cStats.Size=UDim2.new(1,-24,0,12)
+				cStats.Position=UDim2.new(0,12,0,28)
+				cStats.BackgroundTransparency=1
+				cStats.Text=string.format("H:%.0f  D:%.0f  FOV:%.0f  TILT:%.0f  SM:%.3f",
+					cdata.HEIGHT or 0,cdata.DISTANCE or 0,
+					cdata.FOV or 66,cdata.TILT or 0,cdata.SMOOTH or 0.055)
+				cStats.TextColor3=Color3.fromRGB(255,255,255)
+				cStats.TextTransparency=0.60
+				cStats.TextSize=8
+				cStats.Font=Enum.Font.Gotham
+				cStats.TextXAlignment=Enum.TextXAlignment.Left
+				cStats.ZIndex=4
+				cStats.Parent=card
+
+				local cFlags=Instance.new("TextLabel")
+				cFlags.Size=UDim2.new(1,-24,0,11)
+				cFlags.Position=UDim2.new(0,12,0,43)
+				cFlags.BackgroundTransparency=1
+				local flagStr=""
+				if cdata.AUTO_AI then flagStr=flagStr.."AI  " end
+				if cdata.PREDICTIVE then flagStr=flagStr.."PRED  " end
+				if cdata.SHAKE then flagStr=flagStr.."SHAKE  " end
+				if cdata.DOF then flagStr=flagStr.."DOF  " end
+				cFlags.Text=flagStr~="" and ("FLAGS: "..flagStr) or "NO FLAGS"
+				cFlags.TextColor3=Color3.fromRGB(255,255,255)
+				cFlags.TextTransparency=0.72
+				cFlags.TextSize=7.5
+				cFlags.Font=Enum.Font.Gotham
+				cFlags.TextXAlignment=Enum.TextXAlignment.Left
+				cFlags.ZIndex=4
+				cFlags.Parent=card
+
+				-- Action buttons
+				local bW=56
+				local function libBtn(xFromRight,label)
+					local b=Instance.new("TextButton")
+					b.Size=UDim2.new(0,bW,0,20)
+					b.Position=UDim2.new(1,-xFromRight,1,-28)
+					b.BackgroundColor3=Color3.fromRGB(255,255,255)
+					b.BackgroundTransparency=0.88
+					b.BorderSizePixel=0
+					b.Text=label
+					b.TextColor3=Color3.fromRGB(255,255,255)
+					b.TextTransparency=0.15
+					b.TextSize=7.5
+					b.Font=Enum.Font.GothamBold
+					b.ZIndex=5
+					b.Parent=card
+					Instance.new("UICorner",b).CornerRadius=UDim.new(0,2)
+					b.MouseEnter:Connect(function()
+						TweenService:Create(b,TweenInfo.new(0.1),{BackgroundTransparency=0.65}):Play()
+					end)
+					b.MouseLeave:Connect(function()
+						TweenService:Create(b,TweenInfo.new(0.12),{BackgroundTransparency=0.88}):Play()
+					end)
+					return b
+				end
+
+				local actBtn=libBtn(180,"ACTIVATE")
+				actBtn.MouseButton1Click:Connect(function()
+					Cam:setMode(cname)
+					notify("Camera","→ "..cname)
+				end)
+
+				local editBtn=libBtn(118,"EDIT")
+				editBtn.MouseButton1Click:Connect(function()
+					if nameBox then nameBox.Text=cname end
+					for k,v in pairs(cdata) do
+						if SV[k]~=nil then SV[k]=v if SR[k] then SR[k](v) end end
+					end
+					for _,pg in pairs(tabPages) do pg.Visible=false end
+					for _,tb in pairs(tabBtns) do tb.BackgroundTransparency=0.94 tb.TextTransparency=0.52 end
+					tabPages["BUILD"].Visible=true
+					if tabBtns["BUILD"] then tabBtns["BUILD"].BackgroundTransparency=0.80 tabBtns["BUILD"].TextTransparency=0.08 end
+					activeTab="BUILD"
+					notify("Editor","Editing: "..cname)
+				end)
+
+				local delBtn=libBtn(56,"DELETE")
+				delBtn.MouseButton1Click:Connect(function()
+					EditorSys.customCams[cname]=nil
+					CFG.CAM[cname]=nil
+					CAM_FN[cname]=nil
+					for i,s in ipairs(SHOTS) do if s==cname then table.remove(SHOTS,i) break end end
+					TweenService:Create(card,TweenInfo.new(0.16),{BackgroundTransparency=1}):Play()
+					task.delay(0.18,function() if card.Parent then card:Destroy() end end)
+					notify("Editor","Deleted: "..cname)
+				end)
+
+				lY=lY+72
+			end
+
+			if count==0 then
+				local empty=Instance.new("TextLabel")
+				empty.Size=UDim2.new(1,-24,0,50)
+				empty.Position=UDim2.new(0,12,0,lY)
+				empty.BackgroundTransparency=1
+				empty.Text="No saved cameras.\nCreate one in the BUILD tab."
+				empty.TextColor3=Color3.fromRGB(255,255,255)
+				empty.TextTransparency=0.65
+				empty.TextSize=9
+				empty.Font=Enum.Font.Gotham
+				empty.TextWrapped=true
+				empty.ZIndex=3
+				empty.Parent=libraryPage
+				lY=lY+56
+			end
+			libraryPage.CanvasSize=UDim2.new(0,0,0,lY+20)
+		end
+		rebuildLibrary()
+
+		-- ─────────────────────────────────────────────────────────────────
+		-- ════ TAB 4: AI TUNING ════════════════════════════════════════════
+		-- ─────────────────────────────────────────────────────────────────
+		local tuningPage=makePage()
+		tabPages["TUNING"]=tuningPage
+
+		local tY=14
+		tY=secHead(tuningPage,tY,"AI Director")
+
+		local function tSlider(label,key,mn,mx,dec,target,targetKey)
+			local ny,_,setter=mkSlider(tuningPage,tY,label,mn,mx,target[targetKey],dec,function(v) target[targetKey]=v end)
+			tY=ny
+			return setter
 		end
 
-		content.CanvasSize=UDim2.new(0,0,0,yOff+20)
+		local setDecInt  =tSlider("DECISION INTERVAL (s)",     "DI",   0.03,1.0,  3, CFG.AI,"DECISION_INTERVAL")
+		local setMinShot =tSlider("MIN SHOT DURATION (s)",      "MS",   0.5, 8.0,  1, CFG.AI,"MIN_SHOT_DURATION")
+		local setMaxShot =tSlider("MAX SHOT DURATION (s)",      "XS",   3.0, 30.0, 1, CFG.AI,"MAX_SHOT_DURATION")
+		local setConf    =tSlider("CONFIDENCE THRESHOLD",       "CT",   0.2, 0.95, 2, CFG.AI,"CONFIDENCE_THRESHOLD")
+		local setHyst    =tSlider("HYSTERESIS (stay bias)",     "HY",   1.0, 2.5,  2, CFG.AI,"HYSTERESIS")
+		local setUrgency =tSlider("URGENCY OVERRIDE",           "UO",   0.5, 1.0,  2, CFG.AI,"URGENCY_OVERRIDE")
+		local setMoment  =tSlider("MOMENTUM WEIGHT",            "MW",   0,   0.5,  2, CFG.AI,"MOMENTUM_WEIGHT")
+		local setVariety =tSlider("VARIETY BONUS",              "VB",   0,   0.3,  2, CFG.AI,"VARIETY_BONUS")
+		local setTransSm =tSlider("TRANSITION SMOOTH",          "TS",   0.02,0.5,  2, CFG.AI,"TRANSITION_SMOOTH")
 
-		panel.Position=UDim2.new(0.5,-180,0.6,0)
-		TweenService:Create(panel,TweenInfo.new(0.25,Enum.EasingStyle.Quart,Enum.EasingDirection.Out),
-			{Position=UDim2.new(0.5,-180,0.5,-240)}):Play()
+		tY=tY+4
+		tY=secHead(tuningPage,tY,"Ball Tracking")
+		local setBallH=tSlider("BALL SMOOTH — IN FLIGHT",  "BH",0.05,1.0,2,BALL_SMOOTH_MAP,"HIGH")
+		local setBallN=tSlider("BALL SMOOTH — NORMAL",     "BN",0.05,0.9,2,BALL_SMOOTH_MAP,"NORMAL")
+		local setCatch=tSlider("CATCH PREDICT TIME (s)",   "CP",0.1, 1.5,2,CFG.BALL,"CATCH_PREDICT_TIME")
+		local setPredW=tSlider("PREDICTION WEIGHT",        "PW",0.1, 1.0,2,CFG.BALL,"PREDICTION_WEIGHT")
+
+		tY=tY+4
+		tY=secHead(tuningPage,tY,"Shader — Live Adjust")
+		local setBloom  =tSlider("BLOOM INTENSITY",  "BI",0,   1.5, 2, CFG.SHADER,"BLOOM_INTENSITY")
+		local setBloomSz=tSlider("BLOOM SIZE",        "BS",5,   40,  0, CFG.SHADER,"BLOOM_SIZE")
+		local setSat    =tSlider("SATURATION",        "SA",0,   1.0, 2, CFG.SHADER,"SATURATION")
+		local setBright =tSlider("BRIGHTNESS",        "BR",-0.2,0.4, 2, CFG.SHADER,"BRIGHTNESS")
+		local setContrst=tSlider("CONTRAST",          "CO",0,   0.6, 2, CFG.SHADER,"CONTRAST")
+		local setSunRay =tSlider("SUNRAY INTENSITY",  "SR",0,   0.5, 2, CFG.SHADER,"SUNRAY_INTENSITY")
+		local setDOFR   =tSlider("DOF RADIUS",        "DR",0,   80,  0, CFG.SHADER,"DOF_RADIUS")
+
+		-- Live shader apply
+		tuningPage.ChildAdded:Connect(function()end)  -- keep page active
+		local shaderConn
+		shaderConn=RunService.Heartbeat:Connect(function()
+			if not (sg and sg.Parent) then shaderConn:Disconnect() return end
+			if ShaderSys.bloom then ShaderSys.bloom.Intensity=CFG.SHADER.BLOOM_INTENSITY end
+			if ShaderSys.cc then
+				ShaderSys.cc.Saturation=CFG.SHADER.SATURATION
+				ShaderSys.cc.Brightness=CFG.SHADER.BRIGHTNESS
+				ShaderSys.cc.Contrast=CFG.SHADER.CONTRAST
+			end
+			if ShaderSys.sunRay then ShaderSys.sunRay.Intensity=CFG.SHADER.SUNRAY_INTENSITY end
+			if ShaderSys.dof then ShaderSys.dof.FarIntensity=CFG.SHADER.DOF_RADIUS/80 end
+		end)
+
+		tY=tY+8
+		local _,rstAIBtn=mkBtn(tuningPage,tY,"↺  RESET AI & SHADER DEFAULTS",false) tY=tY+42
+		rstAIBtn.MouseButton1Click:Connect(function()
+			CFG.AI.DECISION_INTERVAL=0.10    setDecInt(0.10)
+			CFG.AI.MIN_SHOT_DURATION=1.6     setMinShot(1.6)
+			CFG.AI.MAX_SHOT_DURATION=12.0    setMaxShot(12.0)
+			CFG.AI.CONFIDENCE_THRESHOLD=0.52  setConf(0.52)
+			CFG.AI.HYSTERESIS=1.35           setHyst(1.35)
+			CFG.AI.URGENCY_OVERRIDE=0.82     setUrgency(0.82)
+			CFG.AI.MOMENTUM_WEIGHT=0.15      setMoment(0.15)
+			CFG.AI.VARIETY_BONUS=0.08        setVariety(0.08)
+			CFG.AI.TRANSITION_SMOOTH=0.12    setTransSm(0.12)
+			CFG.SHADER.BLOOM_INTENSITY=0.32  setBloom(0.32)
+			CFG.SHADER.BLOOM_SIZE=20         setBloomSz(20)
+			CFG.SHADER.SATURATION=0.20       setSat(0.20)
+			CFG.SHADER.BRIGHTNESS=0.04       setBright(0.04)
+			CFG.SHADER.CONTRAST=0.15         setContrst(0.15)
+			CFG.SHADER.SUNRAY_INTENSITY=0.10 setSunRay(0.10)
+			CFG.SHADER.DOF_RADIUS=30         setDOFR(30)
+			notify("AI Tuning","All defaults restored")
+		end)
+		tuningPage.CanvasSize=UDim2.new(0,0,0,tY+20)
+
+		-- ─────────────────────────────────────────────────────────────────
+		-- ════ TAB 5: LIVE ═════════════════════════════════════════════════
+		-- Live read-only diagnostics dashboard
+		-- ─────────────────────────────────────────────────────────────────
+		local livePage=makePage()
+		tabPages["LIVE"]=livePage
+
+		local function mkStatRow(parent,y,label,key)
+			local row=Instance.new("Frame")
+			row.Size=UDim2.new(1,-24,0,28)
+			row.Position=UDim2.new(0,12,0,y)
+			row.BackgroundColor3=Color3.fromRGB(255,255,255)
+			row.BackgroundTransparency=0.97
+			row.BorderSizePixel=0
+			row.ZIndex=3
+			row.Parent=parent
+			Instance.new("UICorner",row).CornerRadius=UDim.new(0,2)
+
+			local kLbl=Instance.new("TextLabel")
+			kLbl.Size=UDim2.new(0.52,0,1,0)
+			kLbl.Position=UDim2.new(0,10,0,0)
+			kLbl.BackgroundTransparency=1
+			kLbl.Text=label
+			kLbl.TextColor3=Color3.fromRGB(255,255,255)
+			kLbl.TextTransparency=0.45
+			kLbl.TextSize=8.5
+			kLbl.Font=Enum.Font.GothamBold
+			kLbl.TextXAlignment=Enum.TextXAlignment.Left
+			kLbl.ZIndex=4
+			kLbl.Parent=row
+
+			local vLbl=Instance.new("TextLabel")
+			vLbl.Size=UDim2.new(0.46,0,1,0)
+			vLbl.Position=UDim2.new(0.52,0,0,0)
+			vLbl.BackgroundTransparency=1
+			vLbl.Text="—"
+			vLbl.TextColor3=Color3.fromRGB(255,255,255)
+			vLbl.TextTransparency=0.12
+			vLbl.TextSize=8.5
+			vLbl.Font=Enum.Font.GothamBold
+			vLbl.TextXAlignment=Enum.TextXAlignment.Right
+			vLbl.ZIndex=4
+			vLbl.Parent=row
+			return y+34, vLbl
+		end
+
+		local dY=14
+		dY=secHead(livePage,dY,"Camera State")
+		local _,vMode    =mkStatRow(livePage,dY,"ACTIVE SHOT")       dY=dY+34
+		local _,vFOV     =mkStatRow(livePage,dY,"CURRENT FOV")       dY=dY+34
+		local _,vSmooth  =mkStatRow(livePage,dY,"SMOOTH FACTOR")     dY=dY+34
+		local _,vManual  =mkStatRow(livePage,dY,"MANUAL OVERRIDE")   dY=dY+34
+
+		dY=dY+4
+		dY=secHead(livePage,dY,"AI Director")
+		local _,vAIShot  =mkStatRow(livePage,dY,"AI SHOT")           dY=dY+34
+		local _,vAIPhase =mkStatRow(livePage,dY,"GAME PHASE")        dY=dY+34
+		local _,vAIConf  =mkStatRow(livePage,dY,"LAST CONFIDENCE")   dY=dY+34
+
+		dY=dY+4
+		dY=secHead(livePage,dY,"Ball")
+		local _,vBallPos =mkStatRow(livePage,dY,"POSITION")          dY=dY+34
+		local _,vBallVel =mkStatRow(livePage,dY,"VELOCITY MAG")      dY=dY+34
+		local _,vBallAir =mkStatRow(livePage,dY,"AIRBORNE")          dY=dY+34
+
+		dY=dY+4
+		dY=secHead(livePage,dY,"System")
+		local _,vErrors  =mkStatRow(livePage,dY,"ERROR COUNT")       dY=dY+34
+		local _,vCustom  =mkStatRow(livePage,dY,"CUSTOM CAMERAS")    dY=dY+34
+		local _,vShots   =mkStatRow(livePage,dY,"AI SHOT POOL SIZE") dY=dY+34
+		local _,vPlayer  =mkStatRow(livePage,dY,"PLAYER")            dY=dY+34
+
+		livePage.CanvasSize=UDim2.new(0,0,0,dY+20)
+
+		-- Live update loop
+		task.spawn(function()
+			while sg and sg.Parent do
+				if livePage.Visible then
+					pcall(function()
+						vMode.Text    =tostring(Cam.mode or "—")
+						vFOV.Text     =string.format("%.1f°",Cam.camera and Cam.camera.FieldOfView or 0)
+						vSmooth.Text  =string.format("%.3f",CFG.CAM[Cam.mode] and (CFG.CAM[Cam.mode].SMOOTH or 0) or 0)
+						vManual.Text  =Cam.manual and "YES" or "NO"
+						vAIShot.Text  =tostring(AI.shot or "—")
+						vAIPhase.Text =tostring(GameState.phase or "—")
+						vAIConf.Text  =string.format("%.2f",AI.lastConf or 0)
+						if Cam.ball and Cam.ball.Parent then
+							local bp=Cam.ball.Position
+							vBallPos.Text =string.format("%.0f, %.0f, %.0f",bp.X,bp.Y,bp.Z)
+							local bv=BallTracker:GetSmoothedVelocity(3)
+							vBallVel.Text =string.format("%.1f studs/s",bv.Magnitude)
+							vBallAir.Text =BallTracker.airborne and "YES" or "NO"
+						else
+							vBallPos.Text="NO BALL" vBallVel.Text="—" vBallAir.Text="—"
+						end
+						vErrors.Text  =tostring(SysMon and SysMon.errorCount or 0)
+						local cc=0 for _ in pairs(EditorSys.customCams) do cc=cc+1 end
+						vCustom.Text  =tostring(cc)
+						vShots.Text   =tostring(#SHOTS)
+						vPlayer.Text  =LP.Name
+					end)
+				end
+				task.wait(0.25)
+			end
+		end)
+
+		-- ─────────────────────────────────────────────────────────────────
+		-- SIDEBAR TABS
+		-- ─────────────────────────────────────────────────────────────────
+		local function switchTab(id)
+			activeTab=id
+			for _,pg in pairs(tabPages) do pg.Visible=false end
+			for tid,tb in pairs(tabBtns) do
+				local on=tid==id
+				TweenService:Create(tb,TweenInfo.new(0.12),{BackgroundTransparency=on and 0.80 or 0.94}):Play()
+			end
+			if tabPages[id] then tabPages[id].Visible=true end
+			if id=="LIBRARY" then rebuildLibrary() end
+		end
+
+		for i,td in ipairs(tabDefs) do
+			local isActive=td.id==activeTab
+			local tb=Instance.new("TextButton")
+			tb.Size=UDim2.new(1,0,0,44)
+			tb.Position=UDim2.new(0,0,0,8+(i-1)*48)
+			tb.BackgroundColor3=Color3.fromRGB(255,255,255)
+			tb.BackgroundTransparency=isActive and 0.80 or 0.94
+			tb.BorderSizePixel=0
+			tb.Text=""
+			tb.AutoButtonColor=false
+			tb.ZIndex=6
+			tb.Parent=sidebar
+			tabBtns[td.id]=tb
+
+			-- Active indicator bar
+			local indic=Instance.new("Frame")
+			indic.Size=UDim2.new(0,2,0,22)
+			indic.Position=UDim2.new(0,0,0.5,-11)
+			indic.BackgroundColor3=Color3.fromRGB(255,255,255)
+			indic.BackgroundTransparency=isActive and 0.25 or 1
+			indic.BorderSizePixel=0
+			indic.ZIndex=7
+			indic.Parent=tb
+
+			local icon=Instance.new("TextLabel")
+			icon.Size=UDim2.new(1,0,0,16)
+			icon.Position=UDim2.new(0,0,0,7)
+			icon.BackgroundTransparency=1
+			icon.Text=td.icon
+			icon.TextColor3=Color3.fromRGB(255,255,255)
+			icon.TextTransparency=isActive and 0.06 or 0.52
+			icon.TextSize=12
+			icon.Font=Enum.Font.GothamBold
+			icon.ZIndex=7
+			icon.Parent=tb
+
+			local lbl=Instance.new("TextLabel")
+			lbl.Size=UDim2.new(1,0,0,10)
+			lbl.Position=UDim2.new(0,0,0,25)
+			lbl.BackgroundTransparency=1
+			lbl.Text=td.label
+			lbl.TextColor3=Color3.fromRGB(255,255,255)
+			lbl.TextTransparency=isActive and 0.15 or 0.60
+			lbl.TextSize=6.5
+			lbl.Font=Enum.Font.GothamBold
+			lbl.ZIndex=7
+			lbl.Parent=tb
+
+			tb.MouseButton1Click:Connect(function()
+				-- Update indicator
+				for _,o in pairs(tabBtns) do
+					local oIndic=o:FindFirstChildOfClass("Frame")
+					if oIndic then oIndic.BackgroundTransparency=1 end
+				end
+				indic.BackgroundTransparency=0.25
+				switchTab(td.id)
+			end)
+			tb.MouseEnter:Connect(function()
+				if activeTab~=td.id then
+					TweenService:Create(tb,TweenInfo.new(0.1),{BackgroundTransparency=0.88}):Play()
+				end
+			end)
+			tb.MouseLeave:Connect(function()
+				if activeTab~=td.id then
+					TweenService:Create(tb,TweenInfo.new(0.12),{BackgroundTransparency=0.94}):Play()
+				end
+			end)
+		end
+		switchTab("BUILD")
+
+		-- ─────────────────────────────────────────────────────────────────
+		-- STATUS BAR
+		-- ─────────────────────────────────────────────────────────────────
+		local statusBar=Instance.new("Frame")
+		statusBar.Size=UDim2.new(1,0,0,22)
+		statusBar.Position=UDim2.new(0,0,1,-22)
+		statusBar.BackgroundColor3=Color3.fromRGB(11,11,11)
+		statusBar.BorderSizePixel=0
+		statusBar.ZIndex=8
+		statusBar.Parent=panel
+
+		local sbTop=Instance.new("Frame")
+		sbTop.Size=UDim2.new(1,0,0,1)
+		sbTop.BackgroundColor3=Color3.fromRGB(255,255,255)
+		sbTop.BackgroundTransparency=0.88
+		sbTop.BorderSizePixel=0
+		sbTop.ZIndex=9
+		sbTop.Parent=statusBar
+
+		local sbLeft=Instance.new("TextLabel")
+		sbLeft.Size=UDim2.new(0.5,0,1,0)
+		sbLeft.Position=UDim2.new(0,SW+10,0,0)
+		sbLeft.BackgroundTransparency=1
+		sbLeft.Text="UFBarstool v"..VERSION.."  ·  "..LP.Name.."  ·  UNLIMITED"
+		sbLeft.TextColor3=Color3.fromRGB(255,255,255)
+		sbLeft.TextTransparency=0.65
+		sbLeft.TextSize=7.5
+		sbLeft.Font=Enum.Font.Gotham
+		sbLeft.TextXAlignment=Enum.TextXAlignment.Left
+		sbLeft.ZIndex=9
+		sbLeft.Parent=statusBar
+
+		local sbRight=Instance.new("TextLabel")
+		sbRight.Size=UDim2.new(0.45,0,1,0)
+		sbRight.Position=UDim2.new(0.55,-8,0,0)
+		sbRight.BackgroundTransparency=1
+		sbRight.Text="AI: —  ·  PHASE: —"
+		sbRight.TextColor3=Color3.fromRGB(255,255,255)
+		sbRight.TextTransparency=0.65
+		sbRight.TextSize=7.5
+		sbRight.Font=Enum.Font.GothamBold
+		sbRight.TextXAlignment=Enum.TextXAlignment.Right
+		sbRight.ZIndex=9
+		sbRight.Parent=statusBar
+
+		task.spawn(function()
+			while sg and sg.Parent do
+				pcall(function()
+					if sbRight and sbRight.Parent then
+						sbRight.Text="AI: "..(AI.shot or "—").."  ·  "..tostring(GameState.phase or "—")
+					end
+				end)
+				task.wait(0.5)
+			end
+		end)
+
+		-- ─────────────────────────────────────────────────────────────────
+		-- ENTRANCE ANIMATION
+		-- ─────────────────────────────────────────────────────────────────
+		backdrop.BackgroundTransparency=1
+		panel.Position=UDim2.new(0.5,-W/2,0.5,-H/2+20)
+		panel.BackgroundTransparency=1
+
+		TweenService:Create(backdrop,TweenInfo.new(0.18),{BackgroundTransparency=0.55}):Play()
+		TweenService:Create(panel,TweenInfo.new(0.24,Enum.EasingStyle.Quart,Enum.EasingDirection.Out),{
+			Position=UDim2.new(0.5,-W/2,0.5,-H/2),
+			BackgroundTransparency=0
+		}):Play()
+
 	end,"BUILD_CAMERA_EDITOR")
 end
 
