@@ -1,0 +1,34 @@
+[
+  {
+    "username": "d",
+    "userId": 123456789,
+    "tier": "PREMIUM",
+    "features": ["EDITOR", "SHADERS", "DRONE", "POV", "CUSTOM_CAMS", "BALL_FLIGHT"],
+    "expiry": "2026-12-31",
+    "note": "Early supporter"
+  },
+  {
+    "username": "ExampleUser2",
+    "userId": 987654321,
+    "tier": "STANDARD",
+    "features": ["SHADERS", "DRONE"],
+    "expiry": "2026-06-30",
+    "note": ""
+  },
+  {
+    "username": "UFBarstoolCamera7",
+    "userId": 10490649675,
+    "tier": "UNLIMITED",
+    "features": [],
+    "expiry": "NEVER",
+    "note": "Lifetime access"
+  },
+  {
+    "username": "FreeTrialUser",
+    "userId": 444555666,
+    "tier": "FREE",
+    "features": ["SHADERS"],
+    "expiry": "2026-03-15",
+    "note": "Trial"
+  }
+]
