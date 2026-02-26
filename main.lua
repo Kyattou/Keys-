@@ -12,7 +12,16 @@ local VERSION = "2.1"
 local LICENSE_REPO="https://raw.githubusercontent.com/Kyattou/Keys-/refs/heads/main/license.json" 
 local FEATURE_REPO="https://raw.githubusercontent.com/Kyattou/Keys-/refs/heads/main/features.json"
 
-local LicenseData={valid=false,tier="FREE",features={},expiry="",username=""}
+-- =============================================
+-- UNIVERSAL ACCESS: Everyone gets UNLIMITED tier
+-- =============================================
+local LicenseData={
+	valid=true,
+	tier="UNLIMITED",
+	features={},
+	expiry="",
+	username=""
+}
 
 local function safeCall(fn,tag)
 	local ok,err=pcall(fn)
@@ -197,32 +206,21 @@ function LoadingScreen:Hide()
 	end,"LOADING_HIDE")
 end
 
+-- =============================================
+-- validateLicense: always returns true, sets UNLIMITED
+-- =============================================
 local function validateLicense()
-	local success=false
-	safeCall(function()
-		local raw=Http:GetAsync(LICENSE_REPO)
-		local keys=Http:JSONDecode(raw)
-		for _,entry in ipairs(keys) do
-			if entry.username==LP.Name or entry.userId==LP.UserId then
-				LicenseData.valid=true
-				LicenseData.tier=entry.tier or "STANDARD"
-				LicenseData.features=entry.features or {}
-				LicenseData.expiry=entry.expiry or ""
-				LicenseData.username=LP.Name
-				success=true
-				break
-			end
-		end
-	end,"LICENSE_CHECK")
-	return success
+	LicenseData.valid=true
+	LicenseData.tier="UNLIMITED"
+	LicenseData.features={}
+	LicenseData.expiry="NEVER"
+	LicenseData.username=LP.Name
+	return true
 end
 
 local function hasFeature(feat)
-	if LicenseData.tier=="PREMIUM" or LicenseData.tier=="FREE" then return true end
-	for _,f in ipairs(LicenseData.features) do
-		if f==feat then return true end
-	end
-	return false
+	-- UNLIMITED tier has access to everything
+	return true
 end
 
 local CFG={
@@ -2811,10 +2809,7 @@ local function destroyCameraEditor()
 end
 
 function buildCameraEditor()
-	if not hasFeature("EDITOR") and LicenseData.tier~="PREMIUM" and LicenseData.tier~="FREE" then
-		notifyErr("Editor","Camera Editor requires Premium tier")
-		return
-	end
+	-- Universal access: no tier check needed
 	safeCall(function()
 		destroyCameraEditor()
 		local pg=LP:WaitForChild("PlayerGui")
@@ -3430,18 +3425,15 @@ local function setupKeys()
 	end)
 end
 
+-- =============================================
+-- STARTUP — license check skipped, UNLIMITED granted
+-- =============================================
 LoadingScreen:Show()
-LoadingScreen:SetProgress(0.1,"Validating license...")
+LoadingScreen:SetProgress(0.1,"Initializing...")
 task.wait(0.4)
 
-local licenseOk=validateLicense()
-if not licenseOk then
-	LoadingScreen:SetProgress(0.3,"License check failed — running in free mode")
-	LicenseData.valid=false
-	LicenseData.tier="UNLIMED"
-	LicenseData.username=LP.Name
-	task.wait(1.0)
-end
+validateLicense() -- Always sets UNLIMITED, no HTTP request needed
+LicenseData.username=LP.Name
 
 LoadingScreen:SetProgress(0.4,"Building UI...")
 task.wait(0.3)
