@@ -1,0 +1,121 @@
+{
+  "version": "10.0",
+  "lastUpdated": "2026-02-25",
+
+  "tiers": {
+    "FREE": {
+      "label": "Free",
+      "description": "Basic camera system with AI Director",
+      "maxCustomCams": 0,
+      "includes": [
+        "AI_DIRECTOR",
+        "BROADCAST_CAMS",
+        "MANUAL_SELECT",
+        "SHOT_HUD",
+        "NOTIFICATIONS",
+        "KEYBINDS"
+      ]
+    },
+    "STANDARD": {
+      "label": "Standard",
+      "description": "Full camera suite with drone and shaders",
+      "maxCustomCams": 3,
+      "includes": [
+        "AI_DIRECTOR",
+        "BROADCAST_CAMS",
+        "MANUAL_SELECT",
+        "SHOT_HUD",
+        "NOTIFICATIONS",
+        "KEYBINDS",
+        "SHADERS",
+        "DRONE",
+        "SETTINGS_GUI",
+        "BALL_TRACKING"
+      ]
+    },
+    "PREMIUM": {
+      "label": "Premium",
+      "description": "Everything including editor and unlimited custom cams",
+      "maxCustomCams": 50,
+      "includes": [
+        "AI_DIRECTOR",
+        "BROADCAST_CAMS",
+        "MANUAL_SELECT",
+        "SHOT_HUD",
+        "NOTIFICATIONS",
+        "KEYBINDS",
+        "SHADERS",
+        "DRONE",
+        "SETTINGS_GUI",
+        "BALL_TRACKING",
+        "EDITOR",
+        "CUSTOM_CAMS",
+        "POV",
+        "BALL_FLIGHT",
+        "CINEMATIC",
+        "CAMERA_SHAKE",
+        "SMART_CUTS",
+        "PREDICTIVE_BALL"
+      ]
+    },
+    "UNLIMITED": {
+      "label": "Unlimited",
+      "description": "Lifetime access to all current and future features",
+      "maxCustomCams": -1,
+      "includes": ["ALL"]
+    }
+  },
+
+  "features": {
+    "AI_DIRECTOR":     { "label": "AI Director",        "description": "Automatic camera switching based on game state" },
+    "BROADCAST_CAMS":  { "label": "Broadcast Cameras",  "description": "Standard, high, and tight broadcast angles" },
+    "MANUAL_SELECT":   { "label": "Manual Selection",   "description": "Keybind camera switching" },
+    "SHOT_HUD":        { "label": "Shot HUD",           "description": "Bottom-center active camera display" },
+    "NOTIFICATIONS":   { "label": "Notifications",      "description": "Toast notification system" },
+    "KEYBINDS":        { "label": "Keybinds",           "description": "Keyboard shortcuts for all cameras" },
+    "SHADERS":         { "label": "Broadcast Shaders",  "description": "Color correction, bloom, DOF, atmosphere" },
+    "DRONE":           { "label": "Drone Camera",       "description": "Free-fly drone with lock and orbit modes" },
+    "SETTINGS_GUI":    { "label": "Settings Panel",     "description": "In-game settings with ] key" },
+    "BALL_TRACKING":   { "label": "Ball Tracking",      "description": "Enhanced ball velocity and flight detection" },
+    "EDITOR":          { "label": "Camera Editor",      "description": "Create and save custom camera angles" },
+    "CUSTOM_CAMS":     { "label": "Custom Cameras",     "description": "Use custom cameras with AI Director" },
+    "POV":             { "label": "POV Camera",          "description": "First-person player view with head bob" },
+    "BALL_FLIGHT":     { "label": "Ball Flight Cam",    "description": "Cinematic ball-in-air tracking with arc view" },
+    "CINEMATIC":       { "label": "Cinematic Mode",     "description": "Slow dolly orbit camera" },
+    "CAMERA_SHAKE":    { "label": "Camera Shake",       "description": "Intensity-based camera shake on big plays" },
+    "SMART_CUTS":      { "label": "Smart Cuts",         "description": "AI cuts to catch cam before ball arrives" },
+    "PREDICTIVE_BALL": { "label": "Predictive Ball",    "description": "Physics-based ball landing and catch prediction" }
+  },
+
+  "cameras": {
+    "free": [
+      "BROADCAST", "HIGH_BROADCAST", "TIGHT_BROADCAST",
+      "SKYCAM", "ALL_22", "OVERVIEW_CAM"
+    ],
+    "standard": [
+      "QB_CAM", "QB_CLOSEUP", "QB_SCRAMBLE",
+      "POCKET_CAM", "BLITZ_CAM", "SACK_CAM",
+      "RECEIVER_CAM", "RECEIVER_ISO", "INTERCEPTION",
+      "BALL_CAM", "BALL_TRACK",
+      "TACKLE_CAM", "FUMBLE_CAM",
+      "SIDELINE_FOLLOW", "SIDELINE_STATIC",
+      "KICKOFF_CAM", "KICKOFF_WIDE", "KICKOFF_RETURN",
+      "PUNT_CAM", "PUNT_HANG", "PUNT_RETURN",
+      "FIELD_GOAL_CAM", "FIELD_GOAL_SIDE", "FIELD_GOAL_POSTS",
+      "RETURN_CAM",
+      "ENDZONE_STD", "ENDZONE_HIGH",
+      "LINE_CAM", "PYLON_CAM",
+      "CLUSTER_CAM", "TACTICAL_CAM",
+      "HURRY_UP_CAM", "FORMATION_CAM",
+      "TWO_POINT_CAM", "ONSIDE_CAM",
+      "CELEBRATION_CAM"
+    ],
+    "premium": [
+      "BALL_FLIGHT", "BALL_SPIRAL",
+      "CATCH_CAM", "CINEMATIC",
+      "OVERHEAD_TRACK", "REVERSE_ANGLE",
+      "LOW_ENDZONE", "SNAP_CAM", "COACH_CAM",
+      "POV_CAM"
+    ]
+  }
+}
