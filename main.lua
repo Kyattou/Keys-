@@ -218,7 +218,7 @@ local function validateLicense()
 end
 
 local function hasFeature(feat)
-	if LicenseData.tier=="PREMIUM" or LicenseData.tier=="UNLIMITED" then return true end
+	if LicenseData.tier=="PREMIUM" or LicenseData.tier=="FREE" then return true end
 	for _,f in ipairs(LicenseData.features) do
 		if f==feat then return true end
 	end
@@ -2811,7 +2811,7 @@ local function destroyCameraEditor()
 end
 
 function buildCameraEditor()
-	if not hasFeature("EDITOR") and LicenseData.tier~="PREMIUM" and LicenseData.tier~="UNLIMITED" then
+	if not hasFeature("EDITOR") and LicenseData.tier~="PREMIUM" and LicenseData.tier~="FREE" then
 		notifyErr("Editor","Camera Editor requires Premium tier")
 		return
 	end
