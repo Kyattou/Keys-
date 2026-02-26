@@ -8,14 +8,10 @@ local TweenService=game:GetService("TweenService")
 local StarterGui=game:GetService("StarterGui")
 local LP=Players.LocalPlayer
 
-local VERSION="10.0"
-local licenseData = HttpService:JSONDecode(
-    game:HttpGet("https://raw.githubusercontent.com/Kyattou/Keys-/refs/heads/main/license.json")
-)
+local VERSION = "2.1"
 
-local featureData = HttpService:JSONDecode(
-    game:HttpGet("https://raw.githubusercontent.com/Kyattou/Keys-/refs/heads/main/features.json")
-)
+local LICENSE_REPO = loadstring(game:HttpGet("https://raw.githubusercontent.com/Kyattou/Keys-/refs/heads/main/license.json"))()
+local FEATURE_REPO = loadstring(game:HttpGet("https://raw.githubusercontent.com/Kyattou/Keys-/refs/heads/main/features.json"))()
 
 local LicenseData={valid=false,tier="PREMIUM",features={},expiry="",username=""}
 
