@@ -17,7 +17,7 @@ local featureData = HttpService:JSONDecode(
     game:HttpGet("https://raw.githubusercontent.com/Kyattou/Keys-/refs/heads/main/features.json")
 )
 
-local LicenseData={valid=false,tier="UNLIMITED",features={},expiry="",username=""}
+local LicenseData={valid=false,tier="PREMIUM",features={},expiry="",username=""}
 
 local function safeCall(fn,tag)
 	local ok,err=pcall(fn)
