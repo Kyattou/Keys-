@@ -12,7 +12,7 @@ local VERSION = "2.1"
 local LICENSE_REPO="https://raw.githubusercontent.com/Kyattou/Keys-/refs/heads/main/license.json" 
 local FEATURE_REPO="https://raw.githubusercontent.com/Kyattou/Keys-/refs/heads/main/features.json"
 
-local LicenseData={valid=false,tier="PREMIUM",features={},expiry="",username=""}
+local LicenseData={valid=false,tier="FREE",features={},expiry="",username=""}
 
 local function safeCall(fn,tag)
 	local ok,err=pcall(fn)
