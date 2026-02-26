@@ -9,8 +9,13 @@ local StarterGui=game:GetService("StarterGui")
 local LP=Players.LocalPlayer
 
 local VERSION="10.0"
-local LICENSE_REPO = loadstring(game:HttpGet("https://raw.githubusercontent.com/Kyattou/Keys-/refs/heads/main/license.json"))()
-local FEATURE_REPO = loadstring(game:HttpGet("https://raw.githubusercontent.com/Kyattou/Keys-/refs/heads/main/features.json"))()
+local licenseData = HttpService:JSONDecode(
+    game:HttpGet("https://raw.githubusercontent.com/Kyattou/Keys-/refs/heads/main/license.json")
+)
+
+local featureData = HttpService:JSONDecode(
+    game:HttpGet("https://raw.githubusercontent.com/Kyattou/Keys-/refs/heads/main/features.json")
+)
 
 local LicenseData={valid=false,tier="UNLIMITED",features={},expiry="",username=""}
 
