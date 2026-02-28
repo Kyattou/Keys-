@@ -22,6 +22,201 @@ local LicenseData={
 	expiry="",
 	username=""
 }
+-- =============================================
+-- IRL TIME SYNC — Syncs Roblox Lighting to real local time
+-- =============================================
+local TimeSyncSys = {
+    active = false,
+    conn = nil,
+    UPDATE_INTERVAL = 60.0, -- seconds between full re-syncs
+    lastSync = 0,
+    displayGui = nil,
+}
+
+local function getRealHour()
+    -- os.time() returns UTC epoch. We use the client's local offset.
+    -- Roblox doesn't expose timezone, so we derive local time from os.date("*t")
+    -- which respects the OS locale on PC. On mobile it may return UTC.
+    local t = os.date("*t")
+    return t.hour, t.min, t.sec
+end
+
+local function hoursToLightingClock(h, m, s)
+    -- Roblox Lighting.ClockTime is 0–24 float
+    return h + (m / 60) + (s / 3600)
+end
+
+local function applyTimeToLighting(clockTime)
+    safeCall(function()
+        -- Clamp to valid range
+        clockTime = clockTime % 24
+
+        -- Set clock
+        Lighting.ClockTime = clockTime
+
+        -- Optional: adjust ambient & brightness to feel natural
+        local isDaytime = clockTime >= 6 and clockTime < 20
+        local isDawn    = clockTime >= 5 and clockTime < 8
+        local isDusk    = clockTime >= 18 and clockTime < 21
+        local isNight   = clockTime >= 20 or clockTime < 5
+
+        if isDawn or isDusk then
+            -- Golden hour
+            TweenService:Create(Lighting, TweenInfo.new(4), {
+                Brightness = 1.2,
+                Ambient = Color3.fromRGB(80, 55, 40),
+                OutdoorAmbient = Color3.fromRGB(120, 90, 60),
+            }):Play()
+        elseif isDaytime then
+            TweenService:Create(Lighting, TweenInfo.new(4), {
+                Brightness = 2.0,
+                Ambient = Color3.fromRGB(70, 70, 80),
+                OutdoorAmbient = Color3.fromRGB(130, 140, 160),
+            }):Play()
+        elseif isNight then
+            TweenService:Create(Lighting, TweenInfo.new(4), {
+                Brightness = 0.2,
+                Ambient = Color3.fromRGB(20, 20, 35),
+                OutdoorAmbient = Color3.fromRGB(15, 15, 30),
+            }):Play()
+        end
+    end, "TIME_SYNC_APPLY")
+end
+
+local function buildTimeSyncHud()
+    safeCall(function()
+        local pg = LP:WaitForChild("PlayerGui")
+        local old = pg:FindFirstChild("UFB_TimeHud") if old then old:Destroy() end
+        local sg = Instance.new("ScreenGui")
+        sg.Name = "UFB_TimeHud"
+        sg.ResetOnSpawn = false
+        sg.DisplayOrder = 9997
+        sg.IgnoreGuiInset = true
+        sg.Parent = pg
+
+        local frame = Instance.new("Frame")
+        frame.AnchorPoint = Vector2.new(1, 1)
+        frame.Size = UDim2.new(0, 160, 0, 28)
+        frame.Position = UDim2.new(1, -12, 1, -48)
+        frame.BackgroundColor3 = Color3.fromRGB(6, 6, 6)
+        frame.BackgroundTransparency = 0.30
+        frame.BorderSizePixel = 0
+        frame.Parent = sg
+        Instance.new("UICorner", frame).CornerRadius = UDim.new(0, 15)
+        local us = Instance.new("UIStroke", frame)
+        us.Color = Color3.fromRGB(45, 45, 45)
+        us.Thickness = 1
+
+        -- Clock dot
+        local dot = Instance.new("Frame")
+        dot.Size = UDim2.new(0, 6, 0, 6)
+        dot.Position = UDim2.new(0, 12, 0.5, -3)
+        dot.BackgroundColor3 = Color3.fromRGB(100, 180, 255)
+        dot.BorderSizePixel = 0
+        dot.Parent = frame
+        Instance.new("UICorner", dot).CornerRadius = UDim.new(1, 0)
+
+        local lbl = Instance.new("TextLabel")
+        lbl.Name = "TimeLabel"
+        lbl.Size = UDim2.new(1, -26, 1, 0)
+        lbl.Position = UDim2.new(0, 26, 0, 0)
+        lbl.BackgroundTransparency = 1
+        lbl.Text = "TIME SYNC"
+        lbl.TextColor3 = Color3.fromRGB(210, 210, 210)
+        lbl.TextSize = 10
+        lbl.Font = Enum.Font.GothamBold
+        lbl.TextXAlignment = Enum.TextXAlignment.Left
+        lbl.Parent = frame
+
+        TimeSyncSys.displayGui = sg
+        TimeSyncSys.label = lbl
+        TimeSyncSys.dot = dot
+    end, "BUILD_TIME_HUD")
+end
+
+local function destroyTimeSyncHud()
+    if TimeSyncSys.displayGui and TimeSyncSys.displayGui.Parent then
+        TimeSyncSys.displayGui:Destroy()
+    end
+    TimeSyncSys.displayGui = nil
+    TimeSyncSys.label = nil
+    TimeSyncSys.dot = nil
+end
+
+local function formatTime(h, m, s)
+    local suffix = h >= 12 and "PM" or "AM"
+    local h12 = h % 12
+    if h12 == 0 then h12 = 12 end
+    return string.format("%d:%02d:%02d %s", h12, m, s, suffix)
+end
+
+local function updateTimeSyncLabel()
+    if not TimeSyncSys.label then return end
+    safeCall(function()
+        local h, m, s = getRealHour()
+        TimeSyncSys.label.Text = formatTime(h, m, s)
+        -- Pulse dot to show it's live
+        TweenService:Create(TimeSyncSys.dot, TweenInfo.new(0.15), {BackgroundTransparency = 0.1}):Play()
+        task.delay(0.2, function()
+            if TimeSyncSys.dot and TimeSyncSys.dot.Parent then
+                TweenService:Create(TimeSyncSys.dot, TweenInfo.new(0.4), {BackgroundTransparency = 0.0}):Play()
+            end
+        end)
+    end, "TIME_LABEL_UPDATE")
+end
+
+function TimeSyncSys:Enable()
+    if self.active then return end
+    self.active = true
+
+    -- Immediately apply current time
+    safeCall(function()
+        local h, m, s = getRealHour()
+        local clockTime = hoursToLightingClock(h, m, s)
+        applyTimeToLighting(clockTime)
+        notify("Time Sync", "Synced to " .. formatTime(h, m, s))
+    end, "TIME_SYNC_INIT")
+
+    buildTimeSyncHud()
+
+    -- Second-by-second ticker (updates the HUD label every second, re-syncs Lighting every minute)
+    self.conn = RunService.Heartbeat:Connect(function()
+        safeCall(function()
+            local now = tick()
+            local h, m, s = getRealHour()
+
+            -- Update HUD label every second (cheap string update)
+            if TimeSyncSys.label then
+                updateTimeSyncLabel()
+            end
+
+            -- Re-sync Lighting.ClockTime every full minute to stay accurate
+            if now - TimeSyncSys.lastSync >= TimeSyncSys.UPDATE_INTERVAL then
+                TimeSyncSys.lastSync = now
+                local clockTime = hoursToLightingClock(h, m, s)
+                applyTimeToLighting(clockTime)
+            else
+                -- Smooth tick: advance ClockTime by one real second each second
+                -- This keeps the sun moving smoothly between re-syncs
+                Lighting.ClockTime = hoursToLightingClock(h, m, s)
+            end
+        end, "TIME_SYNC_TICK")
+    end)
+
+    notify("Time Sync", "IRL clock active")
+end
+
+function TimeSyncSys:Disable()
+    if not self.active then return end
+    self.active = false
+    if self.conn then self.conn:Disconnect() self.conn = nil end
+    destroyTimeSyncHud()
+    notify("Time Sync", "Disabled")
+end
+
+function TimeSyncSys:Toggle()
+    if self.active then self:Disable() else self:Enable() end
+end
 
 local function safeCall(fn,tag)
 	local ok,err=pcall(fn)
@@ -4793,6 +4988,8 @@ local function setupKeys()
 		elseif kc==Enum.KeyCode.X then
 			if Drone.active then Drone.fov=math.min(CFG.DRONE.FOV_MAX,Drone.fov+CFG.DRONE.FOV_STEP) return end
 			ShaderSys:Toggle()
+		elseif kc == Enum.KeyCode.N then
+    		TimeSyncSys:Toggle()
 		elseif kc==Enum.KeyCode.A then
 			if Drone.active then return end
 			if Cam.manual then Cam:setMode("AI") else Cam:setMode("BROADCAST") end
@@ -4867,17 +5064,25 @@ LoadingScreen:SetProgress(0.6,"Setting up controls...")
 task.wait(0.2)
 setupKeys()
 
+
+
 LoadingScreen:SetProgress(0.75,"Initializing shaders...")
 task.wait(0.3)
 if CFG.SHADER.ENABLED then ShaderSys:Enable() end
 
-LoadingScreen:SetProgress(0.9,"Starting camera system...")
+LoadingScreen:SetProgress(0.8,"Starting camera system...")
 task.wait(0.4)
 Cam:Start()
+
+LoadingScreen:SetProgress(0.9,"Starting time system...")
+task.wait(0.4)
+TimeSyncSys:Enable()
 
 LoadingScreen:SetProgress(1.0,"Ready")
 task.wait(0.5)
 LoadingScreen:Hide()
+
+
 
 notify("Welcome","UFBarstool Camera v"..VERSION.." — "..LicenseData.tier.." tier")
 
