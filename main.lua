@@ -33,6 +33,168 @@ local TimeSyncSys = {
     displayGui = nil,
 }
 
+-- =============================================
+-- AD BLOCKER MODULE
+-- Finds and destroys any object named "Ads"
+-- across the entire game hierarchy, with live
+-- monitoring for dynamically added Ad objects.
+-- =============================================
+local AdBlocker = {
+	active      = false,
+	conn        = nil,
+	scanConn    = nil,
+	destroyed   = 0,
+	SCAN_INTERVAL = 2.0,    -- seconds between full re-scans
+	lastScan    = 0,
+
+	-- Any object whose name matches one of these (case-insensitive) will be removed.
+	-- Extend this list freely.
+	TARGET_NAMES = {
+		"Ads",
+		"ads",
+		"ADS",
+		"Ad",
+		"ad",
+		"Advertisement",
+		"advertisement",
+		"AdvertGUI",
+		"AdFrame",
+		"AdBanner",
+	},
+}
+
+-- Returns true if the object's name matches any TARGET_NAME.
+local function isAdObject(obj)
+	local name = tostring(obj.Name)
+	for _, target in ipairs(AdBlocker.TARGET_NAMES) do
+		if name == target then
+			return true
+		end
+	end
+	-- Also catch any name that starts with "Ad" followed by a capital (e.g. AdSomething)
+	if name:match("^[Aa][Dd][A-Z]") then
+		return true
+	end
+	return false
+end
+
+-- Safely destroy a single object and log it.
+local function nukeObject(obj)
+	safeCall(function()
+		if obj and obj.Parent then
+			local path = obj:GetFullName()
+			obj:Destroy()
+			AdBlocker.destroyed = AdBlocker.destroyed + 1
+			notify("Ad Blocker", "Removed: " .. path)
+			warn("[UFB AdBlocker] Destroyed: " .. path)
+		end
+	end, "ADBLOCKER_NUKE")
+end
+
+-- Scan a container (and all descendants) for Ad objects.
+local function scanContainer(container)
+	safeCall(function()
+		if not container or not container.Parent then return end
+		-- GetDescendants is safe even on very large trees
+		for _, obj in ipairs(container:GetDescendants()) do
+			if isAdObject(obj) then
+				nukeObject(obj)
+			end
+		end
+		-- Also check the container itself
+		if isAdObject(container) then
+			nukeObject(container)
+		end
+	end, "ADBLOCKER_SCAN")
+end
+
+-- Full-world sweep: Workspace, PlayerGui, StarterGui, Lighting, ReplicatedStorage, etc.
+local function fullScan()
+	local t = tick()
+	if t - AdBlocker.lastScan < AdBlocker.SCAN_INTERVAL then return end
+	AdBlocker.lastScan = t
+
+	safeCall(function()
+		-- Scan the entire game tree
+		for _, obj in ipairs(game:GetDescendants()) do
+			if isAdObject(obj) then
+				nukeObject(obj)
+			end
+		end
+	end, "ADBLOCKER_FULL_SCAN")
+end
+
+-- Watch for any object being added to the game in real time.
+local function hookDescendantAdded(container)
+	safeCall(function()
+		if not container then return end
+		container.DescendantAdded:Connect(function(obj)
+			if isAdObject(obj) then
+				-- Slight yield so the object is fully parented before we nuke it.
+				task.defer(function()
+					nukeObject(obj)
+				end)
+			end
+		end)
+	end, "ADBLOCKER_HOOK")
+end
+
+function AdBlocker:Enable()
+	if self.active then return end
+	self.active  = true
+	self.destroyed = 0
+
+	-- Immediate first sweep
+	safeCall(function() fullScan() end, "ADBLOCKER_INIT_SCAN")
+
+	-- Real-time monitoring: hook the top-level containers that matter most.
+	local containers = {
+		game,
+		WS,
+		game:GetService("ReplicatedStorage"),
+		game:GetService("StarterGui"),
+		game:GetService("Players"),
+		game:GetService("Lighting"),
+	}
+	-- Also hook the local PlayerGui once it exists.
+	safeCall(function()
+		local pg = LP:WaitForChild("PlayerGui", 5)
+		if pg then table.insert(containers, pg) end
+	end, "ADBLOCKER_PG_WAIT")
+
+	for _, c in ipairs(containers) do
+		hookDescendantAdded(c)
+	end
+
+	-- Periodic re-scan (catches anything that slipped through)
+	self.scanConn = RunService.Heartbeat:Connect(function()
+		fullScan()
+	end)
+
+	notify("Ad Blocker", "Active — monitoring for Ad objects")
+	warn("[UFB AdBlocker] Enabled. Watching for Ad objects.")
+end
+
+function AdBlocker:Disable()
+	if not self.active then return end
+	self.active = false
+	if self.scanConn then
+		self.scanConn:Disconnect()
+		self.scanConn = nil
+	end
+	notify("Ad Blocker", "Disabled — removed " .. self.destroyed .. " object(s) this session")
+end
+
+function AdBlocker:Toggle()
+	if self.active then self:Disable() else self:Enable() end
+end
+
+function AdBlocker:Stats()
+	print("═══ UFB AdBlocker Stats ═══")
+	print("Active:    " .. tostring(self.active))
+	print("Destroyed: " .. self.destroyed .. " object(s) this session")
+	print("Targets:   " .. table.concat(self.TARGET_NAMES, ", "))
+end
 local function getRealHour()
     -- os.time() returns UTC epoch. We use the client's local offset.
     -- Roblox doesn't expose timezone, so we derive local time from os.date("*t")
@@ -5073,10 +5235,6 @@ if CFG.SHADER.ENABLED then ShaderSys:Enable() end
 LoadingScreen:SetProgress(0.8,"Starting camera system...")
 task.wait(0.4)
 Cam:Start()
-
-LoadingScreen:SetProgress(0.9,"Starting time system...")
-task.wait(0.4)
-TimeSyncSys:Enable()
 
 LoadingScreen:SetProgress(1.0,"Ready")
 task.wait(0.5)
